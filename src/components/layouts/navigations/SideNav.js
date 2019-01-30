@@ -15,10 +15,10 @@ const SideNav = props => {
                     <a href="#email"><span className="white-text email">jdandturk@gmail.com</span></a>
                 </div>
             </li>
-            <li><a><i class="material-icons">work</i> Projects </a></li>
-            <li><a><i class="material-icons">people</i> Users </a></li>
-            <li><div class="divider"></div></li>
-            <li><a class="waves-effect">Logout</a></li>
+            <li><a><i className="material-icons">work</i> Projects </a></li>
+            <li><a><i className="material-icons">people</i> Users </a></li>
+            <li><div className="divider"></div></li>
+            <li><a className="waves-effect">Logout</a></li>
   
         </ul>
     )
