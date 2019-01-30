@@ -1,4 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
+import {loadProjects} from '../../store/actions/projectActions';
 import Table from '../common/table/Table';
 
 const columns = [
@@ -15,21 +18,35 @@ const data = [
 
 class ProjectList extends React.Component{
 
+    componentDidMount(){
+        this.props.loadProjects();
+    }
+
     render(){
         return(
             <div className='container'>
                 <div className='col s12'>
                     <div className='card'>
                         <div className='card-content'>
-                            <Table columns={columns} tableData={data} title='Project List' />
+                            <Table columns={columns} tableData={this.props.projects} title='Project List' />
                         </div>
                     </div>
                 </div>
             </div>
         )
     }
-
-
 }
 
-export default ProjectList;
+const mapStateToProps = state => {
+    return {
+        projects: state.projects.projects
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        loadProjects: () => dispatch(loadProjects())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);

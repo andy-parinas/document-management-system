@@ -14,10 +14,10 @@ const config = {
 console.log('Firebase Import')
 
 const app = firebase.initializeApp(config);
-const settings = {timestampsInSnapshots: true};
+// const settings = {timestampsInSnapshots: true};
 
 const db = app.firestore();
-db.settings(settings);
+// db.settings(settings);
 
 export default db;
 export const auth = app.auth();
