@@ -6,7 +6,8 @@ import Table from '../common/table/Table';
 
 const columns = [
     {id: 'name', name: 'Project Name'},
-    {id: 'assignedToName', name: 'Assigned To'}
+    {id: 'assignedToName', name: 'Assigned To'},
+    {id: 'status', name: 'Status'},
 ]
 
 const data = [
@@ -22,13 +23,20 @@ class ProjectList extends React.Component{
         this.props.loadProjects();
     }
 
+    handleShowProjectDetail = (id) => {
+        this.props.history.push(`/projects/${id}`)
+    }
+
     render(){
         return(
             <div className='container'>
                 <div className='col s12'>
                     <div className='card'>
                         <div className='card-content'>
-                            <Table columns={columns} tableData={this.props.projects} title='Project List' />
+                            <Table columns={columns} 
+                                onShowDetail={this.handleShowProjectDetail}
+                                tableData={this.props.projects} 
+                                title='Project List' />
                         </div>
                     </div>
                 </div>

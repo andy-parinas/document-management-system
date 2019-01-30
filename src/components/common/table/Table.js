@@ -71,16 +71,11 @@ class Table extends React.Component{
 
     render(){
         
-        console.log(this.state.selected);
-
         const {tableData, columns} = this.props;
 
         const rowData = tableData.map(data => {
 
-            const row = columns.map(column => {
-
-                return <td key={column.id} >{data[column.id]}</td>
-            })
+            const row = columns.map(column => <td key={column.id} >{data[column.id]}</td>)
 
             const selected = this.isSelected((data.id).toString());
 
@@ -93,13 +88,21 @@ class Table extends React.Component{
                             </label>
                         </td>
                         {row}
+                        <td>
+                            <button 
+                                onClick={() => this.props.onShowDetail(data.id)}
+                                style={styles.button} 
+                                className="waves-effect btn-small right ">
+                                Details >
+                            </button>
+                        </td>
                     </tr>
         })
 
         return(
             <Fragment>
                 <TableToolbar numSelected={this.state.selected.length} title={this.props.title} />
-                <table className='stripped' >
+                <table className='highlight' >
                     <TableHead columns={this.props.columns}  onSelectAll={this.handleSelectAll}  />
 
                     <tbody>

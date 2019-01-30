@@ -22,6 +22,7 @@ const TableHead = props => {
                     </label>
                 </th>
                 {columnHeaders}
+                <th></th>
             </tr>
         </thead>
     )
