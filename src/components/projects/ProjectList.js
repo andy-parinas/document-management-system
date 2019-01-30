@@ -21,7 +21,7 @@ class ProjectList extends React.Component{
                 <div className='col s12'>
                     <div className='card'>
                         <div className='card-content'>
-                            <Table columns={columns} tableData={data} />
+                            <Table columns={columns} tableData={data} title='Project List' />
                         </div>
                     </div>
                 </div>
