@@ -4,7 +4,7 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import Navbar from '../layouts/navigations/Navbar';
 import SideNav from '../layouts/navigations/SideNav';
 import ProjectList from '../projects/ProjectList';
-import ProjectDetail from '../projects/ProjectDetail';
+import ProjectDetail from '../projects/project-details/ProjectDetail';
 import UserList from '../users/UserList';
 
 class Dashboard extends React.Component {
