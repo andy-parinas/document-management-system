@@ -1,26 +1,82 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 
-const Navbar = props => {
+import withStyles from 'react-jss';
 
-    return (       
-        <nav className='teal darken-2' >
-            <div className='container'>
-                <div className="nav-wrapper">
-                    <a href="#" className="brand-logo">Scriptum</a>
-                    <a style={{cursor: 'pointer'}} onClick={props.onDrawerAction} 
-                        className='button-collapse-show-on-large right'>
-                        <i className='material-icons'>menu</i>
-                    </a>
-                    <ul id="nav-mobile" className="right hide-on-med-and-down" style={{marginRight: '20px'}} >
-                        <li><NavLink to='/projects/all' >Projects</NavLink></li>
-                        <li><NavLink to='/users/all' >Users</NavLink></li>
-                    </ul>
-                    
-                </div>
-            </div>
-        </nav>    
-    )
+import {Button, 
+    Navbar, 
+    NavbarToggler,
+    NavbarBrand, 
+    Container, 
+    Collapse, 
+    Nav, 
+    NavItem, 
+    NavLink as StrapNavlink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem} from 'reactstrap';
+
+
+const styles = {
+    root: {
+        color: '#fff'
+    }
 }
 
-export default Navbar;
+class NavigationBar extends React.Component {
+
+    state = {
+        isOpen: false
+    }
+
+    toggle = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
+    }
+    
+
+    render(){
+        const {classes} = this.props;
+
+        return (
+            <div className={classes.root} >
+                <Navbar color="dark" dark expand="md">
+                    <Container>
+                        <NavbarBrand>DMS</NavbarBrand>
+                        <NavbarToggler onClick={this.toggle} />
+                        <Collapse isOpen={this.state.isOpen} navbar>
+                            <Nav className='ml-auto' navbar>
+                                <NavItem>
+                                <NavLink className='nav-link' to='/projects/'>Project</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className='nav-link' to='/users/all'>Users</NavLink>
+                                </NavItem>
+                                <UncontrolledDropdown nav inNavbar>
+                                    <DropdownToggle nav caret>
+                                        Andy Parinas
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem>
+                                            Profile
+                                        </DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem>
+                                            Logout
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </Nav>
+                        
+                        </Collapse>
+    
+                    </Container>
+                </Navbar>
+            </div>       
+        )
+    }
+}
+
+export default withStyles(styles)(NavigationBar);

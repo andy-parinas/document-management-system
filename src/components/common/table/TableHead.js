@@ -17,9 +17,7 @@ const TableHead = props => {
         <thead>
             <tr>
                 <th>
-                    <label>
-                        <input className='filled-in' type="checkbox" onChange={props.onSelectAll} /><span></span>
-                    </label>
+                    <input type="checkbox" onChange={props.onSelectAll} />
                 </th>
                 {columnHeaders}
                 <th></th>

@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {Container} from 'reactstrap';
+
 import {loadProjects} from '../../store/actions/projectActions';
 import Table from '../common/table/Table';
 import PreLoader from '../common/preloader/PreLoader';
@@ -43,22 +45,12 @@ class ProjectList extends React.Component{
         }
 
         return(
-            <div className='container'>
-                <div className='col s12'>
-                    <div className='card'>
-                        <div className='card-content'>
-                            { projectList }
-                        </div>
-                    </div>
-                </div>
+            <Container className='container'>
 
-                <div class="fixed-action-btn">
-                    <button class="btn-floating waves-effect btn-large red">
-                        <i class="large material-icons">add</i>
-                    </button>
+                <div>
+                    { projectList }
                 </div>
-                <ProjectForm />
-            </div>
+            </Container>
         )
     }
 }

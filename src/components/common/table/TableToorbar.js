@@ -1,4 +1,8 @@
 import React from 'react';
+import {Button} from 'reactstrap';
+
+import withStyles from 'react-jss';
+
 
 const styles = {
     toolbar: {
@@ -13,33 +17,30 @@ const styles = {
 
 const TableToolbar = props => {
 
-    const {numSelected, title} = props;
+    const {numSelected, title, classes} = props;
 
     let controls = '' 
 
     if(numSelected === 0 ){
         controls =  <div>
-                        <button style={styles.button} className="waves-effect btn-small grey ">
-                            <i className='material-icons left' >refresh</i> refresh
-                        </button>
+                        <Button className={classes.button} size="sm" color='primary' >  New Project </Button>
+                        <Button className={classes.button} size="sm" color='success'>  Refresh List </Button>
                     </div>
-    }else if(numSelected > 1){
+    }else if(numSelected >= 1){
+
+        let addtionalControl = ''
+
+        if(numSelected === 1){
+            addtionalControl =  <React.Fragment>
+                                    <Button className={classes.button} size="sm" color='warning' > Edit </Button>
+                                    <Button className={classes.button}  size="sm" color='info'> Copy </Button> 
+                                </React.Fragment>
+        }
+
+
         controls = <div>
-                        <button style={styles.button} className="waves-effect btn-small grey ">
-                            <i className='material-icons left' >delete</i> Delete
-                        </button>
-                    </div>
-    }else if(numSelected === 1){
-        controls =  <div>
-                        <button style={styles.button} className="waves-effect btn-small grey ">
-                            <i className='material-icons left' >edit</i> Edit
-                        </button>
-                        <button style={styles.button} className="waves-effect btn-small grey ">
-                            <i className='material-icons left' >content_copy</i> Copy
-                        </button>
-                        <button style={styles.button} className="waves-effect btn-small grey ">
-                            <i className='material-icons left' >delete</i> Delete
-                        </button>
+                        { addtionalControl }
+                        <Button className={classes.button} size="sm" color='danger' > Delete </Button>
                     </div>
     }
 
@@ -58,4 +59,4 @@ const TableToolbar = props => {
 
 }
 
-export default TableToolbar;
+export default withStyles(styles)(TableToolbar);

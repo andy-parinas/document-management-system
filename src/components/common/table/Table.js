@@ -3,6 +3,10 @@ import TableHead from './TableHead';
 import { throws } from 'assert';
 import TableToolbar from './TableToorbar';
 
+import withStyle from 'react-jss';
+
+import {Table, Card, CardHeader, CardBody, Button} from 'reactstrap';
+
 const styles = {
     button: {
         marginRight: '5px'
@@ -10,12 +14,21 @@ const styles = {
     checkbox: {
         display: 'flex',
         alignItems: 'center',
+    },
+    rowCheckbox: {
+        // display: 'flex',
+        // alignItems: 'flex-start',
+        // justifyContent: 'center'
+    },
+    rowControl: {
+        display: 'flex',
+        justifyContent: 'flex-end'
     }
 }
 
 
 
-class Table extends React.Component{
+class StripedTable extends React.Component{
 
 
     state = {
@@ -59,8 +72,6 @@ class Table extends React.Component{
             })
         }
 
-        console.log(newSelected);
-
         this.setState({
             ...this.state,
             selected: newSelected
@@ -71,7 +82,7 @@ class Table extends React.Component{
 
     render(){
         
-        const {tableData, columns} = this.props;
+        const {tableData, columns, classes} = this.props;
 
         const rowData = tableData.map(data => {
 
@@ -80,40 +91,40 @@ class Table extends React.Component{
             const selected = this.isSelected((data.id).toString());
 
             return <tr key={Math.random()}>
-                        <td>
-                            <label>
-                                <input id={data.id}  onChange={this.handleItemSelected} 
-                                    className='filled-in' checked={selected}
-                                     type="checkbox" /><span></span>
-                            </label>
+                        <td className={classes.rowCheckbox} >
+                          <div>
+                          <input id={data.id}  onChange={this.handleItemSelected}  checked={selected}
+                                     type="checkbox" />
+                          </div>
                         </td>
                         {row}
-                        <td>
-                            <button 
-                                onClick={() => this.props.onShowDetail(data.id)}
-                                style={styles.button} 
-                                className="waves-effect btn-small right ">
+                        <td className={classes.rowControl} >
+                            <Button 
+                                onClick={() => this.props.onShowDetail(data.id)} size="sm">
                                 Details >
-                            </button>
+                            </Button>
                         </td>
                     </tr>
         })
 
         return(
-            <Fragment>
-                <TableToolbar numSelected={this.state.selected.length} title={this.props.title} />
-                <table className='highlight' >
-                    <TableHead columns={this.props.columns}  onSelectAll={this.handleSelectAll}  />
-
-                    <tbody>
-                        { rowData }
-                    </tbody>
-                </table>
-            </Fragment>
+            <Card>
+                <CardHeader>
+                    <TableToolbar numSelected={this.state.selected.length} title={this.props.title} />
+                </CardHeader>
+                <CardBody>
+                    <Table striped >
+                        <TableHead columns={this.props.columns}  onSelectAll={this.handleSelectAll}  />
+                        <tbody>
+                            { rowData }
+                        </tbody>
+                    </Table>
+                </CardBody>
+            </Card>
         )
     }
 
 
 }
 
-export default Table;
+export default withStyle(styles)(StripedTable);
