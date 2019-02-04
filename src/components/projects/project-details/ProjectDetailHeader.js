@@ -25,23 +25,23 @@ const styles = {
 
 const ProjectDetailHeader = props =>  {
 
-    const {classes} = props;
+    const {classes, project} = props;
 
     return(
         <Fragment>
-            <h5> Project Name </h5>
+            <h5> {project.name} </h5>
             <div className={classes.detailGroup} >
                 <div className={classes.detailItemGroup} >
                     <h6 className={`grey-text ${classes.detailItem} `} >Site Number: </h6>
-                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} >QLD-SP-20190101</h6>
+                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} > {project.siteNumber} </h6>
                 </div>
                 <div className={classes.detailItemGroup} >
                     <h6 className={`grey-text ${classes.detailItem} `} >Site Name: </h6>
-                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} >SouthPort QLD</h6>
+                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} > {project.siteName} </h6>
                 </div>
                 <div className={classes.detailItemGroup} >
                     <h6 className={`grey-text ${classes.detailItem} `} >Assigned To: </h6>
-                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} >Adolfo Parinas</h6>
+                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} > {project.assignedToName} </h6>
                 </div>
             </div>
         </Fragment>
