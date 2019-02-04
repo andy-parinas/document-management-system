@@ -1,6 +1,8 @@
 import React from 'react';
 import withStyles from 'react-jss';
 
+import FadeLoader from 'react-spinners/FadeLoader';
+
 const styles = {
     root: {
         width: 100,
@@ -15,17 +17,8 @@ const styles = {
 
 const PreLoader = ({classes}) => (
     <div className={classes.root}>
-    <div className={`preloader-wrapper small active`} >
-        <div className="spinner-layer spinner-green-only">
-            <div className="circle-clipper left">
-                <div className="circle"></div>
-            </div><div className="gap-patch">
-                <div className="circle"></div>
-            </div><div className="circle-clipper right">
-                <div className="circle"></div>
-            </div>
-        </div>
-    </div>
+        <FadeLoader color={'#80CBC4'}
+          loading={true} />
     </div>
 )
 
