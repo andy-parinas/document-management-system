@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 
 import {loadProjects} from '../../store/actions/projectActions';
 import Table from '../common/table/Table';
+import PreLoader from '../common/preloader/PreLoader';
+import ProjectForm from './ProjectForm';
 
 const columns = [
     {id: 'name', name: 'Project Name'},
@@ -28,18 +30,34 @@ class ProjectList extends React.Component{
     }
 
     render(){
+        const {projects, loading} = this.props;
+
+        let projectList = <PreLoader />
+
+        if(projects.length > 0 && !loading){
+
+            projectList = <Table columns={columns} 
+                                onShowDetail={this.handleShowProjectDetail}
+                                tableData={this.props.projects} 
+                                title='Project List' />
+        }
+
         return(
             <div className='container'>
                 <div className='col s12'>
                     <div className='card'>
                         <div className='card-content'>
-                            <Table columns={columns} 
-                                onShowDetail={this.handleShowProjectDetail}
-                                tableData={this.props.projects} 
-                                title='Project List' />
+                            { projectList }
                         </div>
                     </div>
                 </div>
+
+                <div class="fixed-action-btn">
+                    <button class="btn-floating waves-effect btn-large red">
+                        <i class="large material-icons">add</i>
+                    </button>
+                </div>
+                <ProjectForm />
             </div>
         )
     }
@@ -47,7 +65,8 @@ class ProjectList extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        projects: state.projects.projects
+        projects: state.projects.projects,
+        loading: state.utility.loading
     }
 }
 
