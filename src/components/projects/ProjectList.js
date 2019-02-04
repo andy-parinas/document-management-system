@@ -46,7 +46,6 @@ class ProjectList extends React.Component{
 
         return(
             <Container className='container'>
-
                 <div>
                     { projectList }
                 </div>

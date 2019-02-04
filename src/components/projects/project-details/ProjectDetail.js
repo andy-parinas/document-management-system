@@ -1,6 +1,8 @@
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 
+import {Container, Card} from 'reactstrap';
+
 import {getProject} from '../../../store/actions/projectActions';
 
 import ProjectDetailTasks from './ProjectDetailTasks';
@@ -33,28 +35,20 @@ class ProjectDetail extends React.Component {
 
         if(project !== null && !loading){
             projectDetails = (
-                <Fragment>
+                <Card>
                     <ProjectDetailHeader project={project} />
 
                     <ProjectDetailTasks tasks={tasks} />
 
                     <ProjectDetailControl />
-                </Fragment>
+                </Card>
             )
         }
 
         return(
-            <div className='container'>
-                <div className='col s12'>
-                    <div className='card'>
-                        <div className='card-content' >   
-                            <div>
-                            { projectDetails }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Container className='container'>
+              { projectDetails }
+            </Container>
         )
     }
 

@@ -1,11 +1,13 @@
 import React, {Fragment} from 'react';
 import withStyles from 'react-jss';
 
+import {CardHeader} from 'reactstrap';
+
 const styles = {
     detailGroup: {
         margin: {
-            top: 20,
-            bottom: 20
+            top: 10,
+            bottom: 10
         },
         display: 'flex',
         alignItems: 'center',
@@ -28,23 +30,23 @@ const ProjectDetailHeader = props =>  {
     const {classes, project} = props;
 
     return(
-        <Fragment>
+        <CardHeader>
             <h5> {project.name} </h5>
             <div className={classes.detailGroup} >
                 <div className={classes.detailItemGroup} >
-                    <h6 className={`grey-text ${classes.detailItem} `} >Site Number: </h6>
-                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} > {project.siteNumber} </h6>
+                    <h6 className={`${classes.detailItem} `} >Site Number: </h6>
+                    <h6 className={`${classes.detailItem}`} > {project.siteNumber} </h6>
                 </div>
                 <div className={classes.detailItemGroup} >
-                    <h6 className={`grey-text ${classes.detailItem} `} >Site Name: </h6>
-                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} > {project.siteName} </h6>
+                    <h6 className={`${classes.detailItem} `} >Site Name: </h6>
+                    <h6 className={`${classes.detailItem}`} > {project.siteName} </h6>
                 </div>
                 <div className={classes.detailItemGroup} >
-                    <h6 className={`grey-text ${classes.detailItem} `} >Assigned To: </h6>
-                    <h6 className={`grey-text text-darken-1 ${classes.detailItem}`} > {project.assignedToName} </h6>
+                    <h6 className={`${classes.detailItem} `} >Assigned To: </h6>
+                    <h6 className={`${classes.detailItem}`} > {project.assignedToName} </h6>
                 </div>
             </div>
-        </Fragment>
+        </CardHeader>
     )
 
 }
