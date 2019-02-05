@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {Switch, Route, Redirect} from 'react-router-dom';
+import {Switch, Route, Redirect, Link} from 'react-router-dom';
 
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
 
@@ -39,9 +39,42 @@ class Dashboard extends React.Component {
         })
     }
 
+    generateCrumbs = (crumbs) => {
+        const breadCrumbs = crumbs.filter(crumb => crumb !== "");
+
+        let link = ''
+
+        const breadCrumbItems = breadCrumbs.map((crumb,index) => {
+
+            let name = '';
+            
+            if(crumb === 'projects' || crumb === 'users' || crumb === 'tasks' || crumb == 'task'){
+                name = crumb
+            }else {
+                name = 'details'
+            }
+
+            // name = crumb
+
+            link =  link + '/' + crumb 
+
+            if(index === breadCrumbs.length - 1 ){
+                return <BreadcrumbItem>  {name}  </BreadcrumbItem>
+            }else {
+                return <BreadcrumbItem> 
+                            <Link to={link} > {name} </Link>
+                        </BreadcrumbItem>
+            }
+        })
+
+        return breadCrumbItems;
+    }
+
     render(){
 
-        console.log(this.props.history.location.pathname.split('/'))
+        const crumbs = this.props.history.location.pathname.split('/')
+        
+        console.log(this.props);
 
         const {classes} = this.props
         return(
@@ -49,18 +82,16 @@ class Dashboard extends React.Component {
                 <Navbar onDrawerAction={this.handleDrawerActions} />
                 <div className={classes.breadCrumbs}>
                     <Breadcrumb>
-                        <BreadcrumbItem><a href="#">Home</a></BreadcrumbItem>
-                        <BreadcrumbItem><a href="#">Library</a></BreadcrumbItem>
-                        <BreadcrumbItem active>Data</BreadcrumbItem>
+                        { this.generateCrumbs(crumbs)}
                     </Breadcrumb>
                 </div>
                 <div className={classes.root} >
                     <Switch>
-                        <Route path='/projects/all' component={ProjectList} />
+
                         <Route path='/projects/:id' component={ProjectDetail} />
-                        <Route path='/users/all' component={UserList} />
-                        <Redirect to='/projects/all' from='/' />
-                        <Redirect to='/projects/all' from='/projects' />
+                        <Route path='/projects' component={ProjectList} />
+                        <Route path='/users' component={UserList} />
+                        <Redirect to='/projects' from='/' />
                     </Switch>
                 </div>
             </Fragment>

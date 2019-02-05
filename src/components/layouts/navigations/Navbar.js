@@ -21,6 +21,11 @@ import {Button,
 const styles = {
     root: {
         color: '#fff'
+    },
+    navlink: {
+        '&:focus': {
+            outline: 'none'
+        }
     }
 }
 
@@ -49,13 +54,13 @@ class NavigationBar extends React.Component {
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className='ml-auto' navbar>
                                 <NavItem>
-                                <NavLink className='nav-link' to='/projects/'>Project</NavLink>
+                                <NavLink className={`nav-link ${classes.navlink}`} to='/projects'>Project</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className='nav-link' to='/users/all'>Users</NavLink>
+                                    <NavLink className={`nav-link ${classes.navlink}`}  to='/users'>Users</NavLink>
                                 </NavItem>
                                 <UncontrolledDropdown nav inNavbar>
-                                    <DropdownToggle nav caret>
+                                    <DropdownToggle nav caret className={classes.navlink} >
                                         Andy Parinas
                                     </DropdownToggle>
                                     <DropdownMenu right>
