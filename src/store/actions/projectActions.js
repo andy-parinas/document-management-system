@@ -2,7 +2,7 @@ import db from '../../config/Firebase';
 
 import {PROJECT_LIST, ADD_PROJECT, PROJECT_DETAIL, 
     START_LOADING, END_LOADING, PROJECT_TASKS, START_SUB_LOADING, 
-    END_SUB_LOADING, CLOSE_SNACKBAR, OPEN_SNACKBAR} from './actionTypes'
+    END_SUB_LOADING, CLOSE_SNACKBAR, OPEN_SNACKBAR, TASK_ERROR, TASK_DETAIL} from './actionTypes'
 
 
 
@@ -239,6 +239,10 @@ export const getProjectTasks = (id) => dispatch => {
 
 
 export const getTask = (projectId, taskId) => dispatch => {
+    
+    dispatch({
+        type: START_LOADING
+    })
 
     const projectRef = db.collection('projects').doc(projectId);
 
@@ -270,16 +274,43 @@ export const getTask = (projectId, taskId) => dispatch => {
                     images: images
                 }
 
+                dispatch({
+                    type: TASK_DETAIL,
+                    task: task
+                })
+
+                dispatch({
+                    type: END_LOADING
+                })
+    
+
             })
 
 
         }else { //Document Don't Exist
 
+            console.log('Document Dont Exist')
 
+            dispatch({
+                type: END_LOADING
+            })
+
+            dispatch({
+                type: TASK_ERROR,
+                error: 'Task Not Found'
+            })
         }
 
     }).catch(err => { //Error getting task Document
 
+        dispatch({
+            type: END_LOADING
+        })
+
+        dispatch({
+            type: TASK_ERROR,
+            error: 'Error Getting Task'
+        })
 
         console.log(err);
     })

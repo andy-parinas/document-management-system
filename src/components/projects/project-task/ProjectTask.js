@@ -1,50 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Container, Row, Col, Card, CardImg, CardBody, CardTitle, Button} from 'reactstrap';
+import {Container} from 'reactstrap';
 import withStyles from 'react-jss';
 
 import {getTask} from '../../../store/actions/projectActions';
 import {searchParamsToObject} from '../../../utilities/utilities';
+
+import PreLoader from '../../common/preloader/PreLoader';
 import ImageModal from './ImageModal';
-
-
-
-const styles = {
-    control: {
-        backgroundColor: '#F5F5F5',
-        border: '1px solid #EEEEEE',
-        padding: {
-            top: 10,
-            right: 15,
-            bottom: 5,
-            left: 15
-        },
-        borderRadius: 5,
-        margin: {
-            bottom: 20
-        }
-    },
-    title: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: {
-            bottom: 5
-        }
-    },
-    subTitle: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    button: {
-        margin: {
-            left: 2,
-            right: 2
-        }
-    }
-}
+import ProjectTaskControl from './ProjectTaskControl';
+import ProjectTaskContent from './ProjectTaskContent';
 
 
 class ProjectTask extends React.Component {
@@ -52,15 +18,17 @@ class ProjectTask extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          modal: false
+          modal: false,
+          selectedImage: null
         };
     
         this.toggle = this.toggle.bind(this);
       }
     
-      toggle() {
+      toggle(image) {
         this.setState(prevState => ({
-          modal: !prevState.modal
+          modal: !prevState.modal,
+          selectedImage: image
         }));
       }
 
@@ -79,66 +47,45 @@ class ProjectTask extends React.Component {
 
     render(){
 
-        const {classes} = this.props;
+        const {classes, task, loading, error} = this.props;
 
-        return(
-            <Container>
-                <ImageModal modal={this.state.modal} toggle={this.toggle} />
-                <div className={classes.control} >
-                    <div className={classes.title} >
-                        <h4>Task Name</h4>
-                        <div>
-                            <Button onClick={this.toggle} color='primary' className={classes.button} size='sm'>Download</Button>
-                            <Button color='danger' className={classes.button} size='sm'>Delete</Button>
-                            <Button color='success' className={classes.button} size='sm'>Refresh</Button>
-                        </div>
-                    </div>
-                    <div className={classes.subTitle} >
-                        <h6>Project Name</h6>
-                    </div>
-                </div>
-                <Row>
-                    <Col>
-                        <Card>
-                            <CardImg top width='100%' 
-                            src="https://firebasestorage.googleapis.com/v0/b/site-document.appspot.com/o/project1%2Ftask1%2Fproject_sitenum_sitename_0004.jpg?alt=media&token=2a2ed1fe-a20e-4859-b3f4-286c7fbce11d" />
-                            <CardBody>
-                                <CardTitle>
-                                    <input type='checkbox' />
-                                    Image Name
-                                </CardTitle>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card>
-                            <CardImg top width='100%' 
-                            src="https://firebasestorage.googleapis.com/v0/b/site-document.appspot.com/o/project1%2Ftask1%2Fproject_sitenum_sitename_0004.jpg?alt=media&token=2a2ed1fe-a20e-4859-b3f4-286c7fbce11d" />
-                            <CardBody>
-                                <CardTitle>
-                                    <input type='checkbox' />
-                                    Image Name
-                                </CardTitle>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card>
-                            <CardImg top width='100%' 
-                            src="https://firebasestorage.googleapis.com/v0/b/site-document.appspot.com/o/project1%2Ftask1%2Fproject_sitenum_sitename_0004.jpg?alt=media&token=2a2ed1fe-a20e-4859-b3f4-286c7fbce11d" />
-                            <CardBody>
-                                <CardTitle>
-                                    <input type='checkbox' />
-                                    Image Name
-                                </CardTitle>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
-        )
+        let content = <PreLoader />
+
+        if(task !== null && !loading){
+
+            let images = <h4> No Images Found </h4>
+            if(task.images.length > 0) {
+                images = <ProjectTaskContent images={task.images} onImageClick={this.toggle} />
+            }
+
+            content =  <React.Fragment>
+                            <ImageModal modal={this.state.modal} 
+                                        toggle={this.toggle} image={this.state.selectedImage} />
+
+                            <ProjectTaskControl toggle={this.toggle} 
+                                taskName={task.name}/>    
+
+                            { images }
+                            
+                        </React.Fragment>
+
+        } else if(error !== null && !loading){
+
+            content = <h3> {error} </h3>
+
+        }
+
+        return <Container> {content} </Container> 
     }
 
+}
+
+const mapStateToProps = state => {
+    return {
+        task: state.task.task,
+        error: state.task.error,
+        loading: state.utility.loading
+    }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -147,5 +94,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(ProjectTask));
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectTask);
 

@@ -1,4 +1,4 @@
-import {TASK_DETAIL} from '../actions/actionTypes';
+import {TASK_DETAIL, TASK_ERROR} from '../actions/actionTypes';
 
 const initialState = {
     task: null,
@@ -13,6 +13,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 task: action.task,
                 error: null
+            }
+        
+        case TASK_ERROR: 
+            return {
+                ...state,
+                task: null,
+                error: action.error
             }
         default:
             return state;
