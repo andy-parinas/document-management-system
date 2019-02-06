@@ -6,6 +6,7 @@ import withStyles from 'react-jss';
 
 import {getTask} from '../../../store/actions/projectActions';
 import {searchParamsToObject} from '../../../utilities/utilities';
+import ImageModal from './ImageModal';
 
 
 
@@ -46,10 +47,22 @@ const styles = {
 }
 
 
-
-
-
 class ProjectTask extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          modal: false
+        };
+    
+        this.toggle = this.toggle.bind(this);
+      }
+    
+      toggle() {
+        this.setState(prevState => ({
+          modal: !prevState.modal
+        }));
+      }
 
 
     componentDidMount(){
@@ -70,11 +83,12 @@ class ProjectTask extends React.Component {
 
         return(
             <Container>
+                <ImageModal modal={this.state.modal} toggle={this.toggle} />
                 <div className={classes.control} >
                     <div className={classes.title} >
                         <h4>Task Name</h4>
                         <div>
-                            <Button color='primary' className={classes.button} size='sm'>Download</Button>
+                            <Button onClick={this.toggle} color='primary' className={classes.button} size='sm'>Download</Button>
                             <Button color='danger' className={classes.button} size='sm'>Delete</Button>
                             <Button color='success' className={classes.button} size='sm'>Refresh</Button>
                         </div>
