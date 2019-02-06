@@ -10,6 +10,7 @@ import SideNav from '../layouts/navigations/SideNav';
 import ProjectList from '../projects/ProjectList';
 import ProjectDetail from '../projects/project-details/ProjectDetail';
 import UserList from '../users/UserList';
+import ProjectTask from '../projects/project-task/ProjectTask';
 
 
 const styles = {
@@ -59,9 +60,9 @@ class Dashboard extends React.Component {
             link =  link + '/' + crumb 
 
             if(index === breadCrumbs.length - 1 ){
-                return <BreadcrumbItem>  {name}  </BreadcrumbItem>
+                return <BreadcrumbItem key={crumb} >  {name}  </BreadcrumbItem>
             }else {
-                return <BreadcrumbItem> 
+                return <BreadcrumbItem key={crumb}> 
                             <Link to={link} > {name} </Link>
                         </BreadcrumbItem>
             }
@@ -73,8 +74,6 @@ class Dashboard extends React.Component {
     render(){
 
         const crumbs = this.props.history.location.pathname.split('/')
-        
-        console.log(this.props);
 
         const {classes} = this.props
         return(
@@ -87,7 +86,7 @@ class Dashboard extends React.Component {
                 </div>
                 <div className={classes.root} >
                     <Switch>
-
+                        <Route path='/projects/:id/task' component={ProjectTask} />
                         <Route path='/projects/:id' component={ProjectDetail} />
                         <Route path='/projects' component={ProjectList} />
                         <Route path='/users' component={UserList} />

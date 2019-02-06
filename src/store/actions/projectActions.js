@@ -93,14 +93,14 @@ export const getProject =(id) => dispatch => {
             docref.collection('tasks').get().then(collections => {
                 
                 if(collections.size > 0){
-                    collections.forEach(collection => {
-                    
-                        const task = {
-                            id: collection.id,
-                            ...collection.data()
+                    collections.forEach(task => {
+    
+                        const taskObject = {
+                            id: task.id,
+                            ...task.data()
                         }
             
-                        tasks.push(task)
+                        tasks.push(taskObject)
             
                     })
                 }
@@ -237,6 +237,53 @@ export const getProjectTasks = (id) => dispatch => {
 
 }
 
+
+export const getTask = (projectId, taskId) => dispatch => {
+
+    const projectRef = db.collection('projects').doc(projectId);
+
+    const taskRef = projectRef.collection('tasks').doc(taskId)
+
+    taskRef.get().then(doc => {
+
+        const images = [];
+        
+        if(doc.exists){ //Document Exist
+
+            taskRef.collection('images').get().then(collections => {
+
+                //Get the collection of images if there are.
+                if(collections.size > 0 ){
+                    collections.forEach(collection => {
+                        const image = {
+                            id: collection.id,
+                            ...collection.data()
+                        }
+
+                        images.push(image);
+                    })
+                }
+
+                const task = {
+                    id: doc.id,
+                    ...doc.data(),
+                    images: images
+                }
+
+            })
+
+
+        }else { //Document Don't Exist
+
+
+        }
+
+    }).catch(err => { //Error getting task Document
+
+
+        console.log(err);
+    })
+}
 
 export const closeSnackbar = () => dispatch => {
     dispatch({

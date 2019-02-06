@@ -6,6 +6,9 @@ export const END_LOADING = 'end_loading';
 export const OPEN_SNACKBAR = 'open_snackbar';
 export const CLOSE_SNACKBAR = 'close_snackbar';
 
+export const TASK_DETAIL = 'task_detail';
+export const TASK_IMAGES = 'task_images';
+export const TASK_ERROR = 'task_error';
 
 
 export const PROJECT_LIST = 'project_list';

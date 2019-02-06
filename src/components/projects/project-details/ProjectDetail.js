@@ -27,9 +27,19 @@ class ProjectDetail extends React.Component {
         this.props.getProject(id);
     }
 
+
+    handleTaskDetail = (taskId) => {
+
+        const projectId = this.props.match.params.id;
+
+        this.props.history.push(`/projects/${projectId}/task?id=${taskId}`)
+    }
+
     render(){
 
         const {project, loading} = this.props;
+
+        
 
         let projectDetails = <PreLoader />
 
@@ -38,7 +48,8 @@ class ProjectDetail extends React.Component {
                 <Card>
                     <ProjectDetailHeader project={project} />
 
-                    <ProjectDetailTasks tasks={tasks} />
+                    <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } 
+                        onGetTaskDetail={this.handleTaskDetail}  />
 
                     <ProjectDetailControl />
                 </Card>

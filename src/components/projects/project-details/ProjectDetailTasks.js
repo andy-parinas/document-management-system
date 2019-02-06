@@ -30,16 +30,22 @@ const ProjectDetailTasks = props => {
     const {classes, tasks} = props;
 
     const taskItems = tasks.map(task => {
+
+        let color = 'success';
+        if(task.status !== 'complete') {
+            color = 'primary'
+        }
+
         return  (
-            <ListGroupItem> 
+            <ListGroupItem key={task.id} > 
                 <div className={classes.itemGroup} >
                     <div className={classes.itemTitle} >
                         {task.name} 
-                        <Badge className={classes.badge} pill>14</Badge>
-                        <Badge color="success">Complete</Badge>
+                        <Badge className={classes.badge} pill> {task.imageCount} </Badge>
+                        <Badge color={color}> {task.status } </Badge>
                     </div>
                     <div>
-                        <Button size='sm'> View </Button>
+                        <Button size='sm' onClick={() => props.onGetTaskDetail(task.id)} > View </Button>
                     </div>
                 </div>
             </ListGroupItem>
