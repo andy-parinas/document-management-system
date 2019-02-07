@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import {Container} from 'reactstrap';
 
 import {loadProjects} from '../../store/actions/projectActions';
+import {loadUsers} from '../../store/actions/userActions';
+
 import Table from '../common/table/Table';
 import PreLoader from '../common/preloader/PreLoader';
 import ProjectForm from './ProjectForm';
@@ -14,14 +16,13 @@ const columns = [
     {id: 'status', name: 'Status'},
 ]
 
-const data = [
-    {id: 1, name: 'Project 1 with a Long Name', assignedToName: 'Sheldon Cooper'},
-    {id: 2, name: 'Project 2', assignedToName: 'Howard Wollowitz'},
-    {id: 3, name: 'Project 3', assignedToName: 'Leonard Hofstader'},
-    {id: 4, name: 'Project 4', assignedToName: 'Rajesh Kutrapoli'}
-]
-
 class ProjectList extends React.Component{
+
+    state = {
+        modal: false,
+        action: 'new',
+        selectedProject: null
+    }
 
     componentDidMount(){
         this.props.loadProjects();
@@ -31,7 +32,42 @@ class ProjectList extends React.Component{
         this.props.history.push(`/projects/${id}`)
     }
 
+    toggle = (action, actionObject) => {
+        this.setState(prevState =>({
+            ...prevState,
+            modal: !prevState.modal
+        }))
+    }
+
+    handleNewProject = () => {
+        this.setState(prevState =>({
+            ...prevState,
+            modal: !prevState.modal,
+            action: 'new'
+        }))
+    }
+
+    handleEditProject = (selectedProject) => {
+        this.setState(prevState =>({
+            ...prevState,
+            modal: !prevState.modal,
+            action: 'edit',
+            selectedObject: selectedProject
+        }))
+    }
+
+    handleCopyProject = (selectedProject) => {
+        this.setState(prevState =>({
+            ...prevState,
+            modal: !prevState.modal,
+            action: 'copy',
+            selectedProject: selectedProject
+        }))
+    }
+
+
     render(){
+        console.log(this.state.formType)
         const {projects, loading} = this.props;
 
         let projectList = <PreLoader />
@@ -39,6 +75,9 @@ class ProjectList extends React.Component{
         if(projects.length > 0 && !loading){
 
             projectList = <Table columns={columns} 
+                                onCopyButtonClicked={this.handleCopyProject}
+                                onEditButtonClicked={this.handleEditProject}
+                                onNewButtonClicked={this.handleNewProject}
                                 onShowDetail={this.handleShowProjectDetail}
                                 tableData={this.props.projects} 
                                 title='Project List' />
@@ -46,6 +85,12 @@ class ProjectList extends React.Component{
 
         return(
             <Container className='container'>
+                <ProjectForm
+                    push={this.props.history.push}
+                    project={this.state.selectedProject}
+                    action={this.state.action} 
+                    modal={this.state.modal} 
+                    toggle={this.toggle} />
                 <div>
                     { projectList }
                 </div>

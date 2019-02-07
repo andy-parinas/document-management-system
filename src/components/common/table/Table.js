@@ -78,6 +78,22 @@ class StripedTable extends React.Component{
         })
     }
 
+    handleEditButtonClicked = () => {
+        const selectedObjectId = this.state.selected[0];
+        const selectedObject = this.props.tableData.find(data => data.id === selectedObjectId)
+
+        this.props.onEditButtonClicked(selectedObject)
+    }
+
+    handleCopyButtonClicked = () => {
+        const selectedObjectId = this.state.selected[0];
+        const selectedObject = this.props.tableData.find(data => data.id === selectedObjectId)
+
+        this.props.onCopyButtonClicked(selectedObject)
+    }
+
+
+
     isSelected = id => this.state.selected.indexOf(id) !== -1
 
     render(){
@@ -110,7 +126,12 @@ class StripedTable extends React.Component{
         return(
             <Card>
                 <CardHeader>
-                    <TableToolbar numSelected={this.state.selected.length} title={this.props.title} />
+                    <TableToolbar 
+                        onNewButtonClicked={this.props.onNewButtonClicked}
+                        onEditButtonClicked={this.handleEditButtonClicked}
+                        onCopyButtonClicked={this.handleCopyButtonClicked}
+                        numSelected={this.state.selected.length} 
+                        title={this.props.title} />
                 </CardHeader>
                 <CardBody>
                     <Table striped >

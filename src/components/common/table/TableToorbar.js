@@ -23,7 +23,8 @@ const TableToolbar = props => {
 
     if(numSelected === 0 ){
         controls =  <div>
-                        <Button className={classes.button} size="sm" color='primary' >  New Project </Button>
+                        <Button onClick={() => props.onNewButtonClicked('new') }
+                            className={classes.button} size="sm" color='primary' >  New Project </Button>
                         <Button className={classes.button} size="sm" color='success'>  Refresh List </Button>
                     </div>
     }else if(numSelected >= 1){
@@ -32,8 +33,10 @@ const TableToolbar = props => {
 
         if(numSelected === 1){
             addtionalControl =  <React.Fragment>
-                                    <Button className={classes.button} size="sm" color='warning' > Edit </Button>
-                                    <Button className={classes.button}  size="sm" color='info'> Copy </Button> 
+                                    <Button onClick={props.onEditButtonClicked} 
+                                        className={classes.button} size="sm" color='warning' > Edit </Button>
+                                    <Button onClick={props.onCopyButtonClicked} 
+                                        className={classes.button}  size="sm" color='info'> Copy </Button> 
                                 </React.Fragment>
         }
 
