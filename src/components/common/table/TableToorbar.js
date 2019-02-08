@@ -43,7 +43,7 @@ const TableToolbar = props => {
 
         controls = <div>
                         { addtionalControl }
-                        <Button className={classes.button} size="sm" color='danger' > Delete </Button>
+                        <Button onClick={props.onDeleteButtonClicked} className={classes.button} size="sm" color='danger' > Delete </Button>
                     </div>
     }
 

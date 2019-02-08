@@ -9,6 +9,7 @@ import {loadUsers} from '../../store/actions/userActions';
 import Table from '../common/table/Table';
 import PreLoader from '../common/preloader/PreLoader';
 import ProjectForm from './ProjectForm';
+import ProjectDeleteDialog from './ProjectDeleteDialog';
 
 const columns = [
     {id: 'name', name: 'Project Name'},
@@ -20,8 +21,10 @@ class ProjectList extends React.Component{
 
     state = {
         modal: false,
+        delete: false,
         action: 'new',
-        selectedProject: null
+        selectedProject: null,
+        selectedProjects: []
     }
 
     componentDidMount(){
@@ -36,6 +39,14 @@ class ProjectList extends React.Component{
         this.setState(prevState =>({
             ...prevState,
             modal: !prevState.modal
+        }))
+    }
+
+    
+    toggleDelete = () => {
+        this.setState(prevState =>({
+            ...prevState,
+            delete: !prevState.delete
         }))
     }
 
@@ -65,9 +76,18 @@ class ProjectList extends React.Component{
         }))
     }
 
+    handleDeleteProject = (selectedProjects) => {
+        console.log('Delete Handler', this.state.delete)
+        this.setState(prevState =>({
+            ...prevState,
+            delete: !prevState.delete,
+            selectedProjects: selectedProjects
+        }))
+    }
+
 
     render(){
-        console.log(this.state.formType)
+
         const {projects, loading} = this.props;
 
         let projectList = <PreLoader />
@@ -78,6 +98,7 @@ class ProjectList extends React.Component{
                                 onCopyButtonClicked={this.handleCopyProject}
                                 onEditButtonClicked={this.handleEditProject}
                                 onNewButtonClicked={this.handleNewProject}
+                                onDeleteButtonClicked={this.handleDeleteProject}
                                 onShowDetail={this.handleShowProjectDetail}
                                 tableData={this.props.projects} 
                                 title='Project List' />
@@ -85,6 +106,8 @@ class ProjectList extends React.Component{
 
         return(
             <Container className='container'>
+                <ProjectDeleteDialog modal={this.state.delete}
+                    toggle={this.toggleDelete} projects={this.state.selectedProjects} />
                 <ProjectForm
                     push={this.props.history.push}
                     project={this.state.selectedProject}

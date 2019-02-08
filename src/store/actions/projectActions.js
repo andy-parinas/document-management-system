@@ -188,6 +188,46 @@ export const updateProject = (id, updates, callback) => (dispatch, getState) => 
 
 }
 
+export const deleteProjects = (projects, callback) => dispatch => {
+
+    dispatch({
+        type: START_SUB_LOADING
+    })
+
+    const batch = db.batch();
+
+    projects.forEach(project => {
+        const ref = db.collection('projects').doc(project.id);
+        batch.delete(ref)
+    })
+
+    batch.commit().then(() => {
+        console.log('Projects Deleted')
+
+        dispatch({
+            type: END_SUB_LOADING
+        })
+
+        if(callback){
+            callback('success', 'Projects Successfully Deleted')
+        }
+
+
+        console.log(typeof callback)
+    
+    }).catch(err => {
+        console.log(err);
+        dispatch({
+            type: END_SUB_LOADING
+        })
+
+        
+        if(callback){
+            callback('error', 'Error deleting projects')
+        }
+    })
+}
+
 export const getProjectTasks = (id) => dispatch => {
 
     const docRef = db.collection('projects').doc(id);

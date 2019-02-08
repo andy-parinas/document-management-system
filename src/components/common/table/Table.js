@@ -92,6 +92,14 @@ class StripedTable extends React.Component{
         this.props.onCopyButtonClicked(selectedObject)
     }
 
+    handleDeleteButtonClicked = () => {
+        const selections = this.state.selected.map(selection => {
+            return this.props.tableData.find(data => data.id === selection)
+        })
+
+        console.log(selections)
+        this.props.onDeleteButtonClicked(selections)
+    }
 
 
     isSelected = id => this.state.selected.indexOf(id) !== -1
@@ -130,6 +138,7 @@ class StripedTable extends React.Component{
                         onNewButtonClicked={this.props.onNewButtonClicked}
                         onEditButtonClicked={this.handleEditButtonClicked}
                         onCopyButtonClicked={this.handleCopyButtonClicked}
+                        onDeleteButtonClicked={this.handleDeleteButtonClicked}
                         numSelected={this.state.selected.length} 
                         title={this.props.title} />
                 </CardHeader>

@@ -15,6 +15,7 @@ export const PROJECT_LIST = 'project_list';
 export const ADD_PROJECT = 'add_user';
 export const PROJECT_DETAIL = 'project_detail';
 export const PROJECT_TASKS = 'project_tasks';
+export const DELETE_PROJECT = 'delete_project';
 
 export const AUTH_SUCCESS = 'user_login';
 export const USER_LOGOUT = 'user_logout';

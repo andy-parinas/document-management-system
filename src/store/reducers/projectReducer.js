@@ -1,9 +1,11 @@
-import {PROJECT_LIST, PROJECT_DETAIL, PROJECT_TASKS} from '../actions/actionTypes'
+import {PROJECT_LIST, PROJECT_DETAIL, PROJECT_TASKS, DELETE_PROJECT} from '../actions/actionTypes'
 
 const initialState = {
     projects: [],
     project: null,
-    projectTasks: []
+    projectTasks: [],
+    messagetype: null,
+    message: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -25,6 +27,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 projectTasks: action.tasks
             }
+
         default:
             return state
     }
