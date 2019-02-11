@@ -15,6 +15,7 @@ class ProjectForm extends React.Component{
 
     state = {
         data: {
+            id: null,
             name: '',
             siteNumber: '',
             siteName: '',
@@ -22,6 +23,32 @@ class ProjectForm extends React.Component{
             status: 'new'
         }
     }
+
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+      if(nextProps.project && nextProps.project.id !== prevState.data.id){
+
+        const {project} = nextProps
+
+            return {
+                ...prevState,
+                data: {
+                    ...prevState.data,
+                    id: project.id,
+                    name: project.name,
+                    siteNumber: project.siteNumber,
+                    siteName: project.siteName,
+                    assignedToId: project.assignedToId,
+                    assignedToName: project.assignedToName,
+                    status: project.status
+                }
+            }
+      }
+
+      return null;
+
+    }
+
 
     componentDidMount(){
         this.props.loadUsers()
@@ -56,6 +83,10 @@ class ProjectForm extends React.Component{
 
     render(){
 
+        console.log('Project Form', this.props)
+
+        console.log('Project Form', this.state)
+
         const loader = <div>
                             Saving... <PreLoader />
                         </div>
@@ -86,7 +117,7 @@ class ProjectForm extends React.Component{
                             <Col>
                                 <FormGroup>
                                     <Label for="name">Project Name</Label>
-                                    <Input onChange={this.handleInputChange} type="text" 
+                                    <Input onChange={this.handleInputChange} type="text" value={this.state.data.name}
                                         name="name" id="name" 
                                         placeholder="Enter Project Name" />
                                 </FormGroup>
@@ -96,7 +127,7 @@ class ProjectForm extends React.Component{
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="siteNumber">Site Number</Label>
-                                    <Input onChange={this.handleInputChange} type="text" 
+                                    <Input onChange={this.handleInputChange} type="text" value={this.state.data.siteNumber}
                                         name="siteNumber" id="siteNumber" 
                                         placeholder="Enter Site Number" />
                                 </FormGroup>
@@ -104,7 +135,7 @@ class ProjectForm extends React.Component{
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="siteName">Site Name</Label>
-                                    <Input onChange={this.handleInputChange} type="text"
+                                    <Input onChange={this.handleInputChange} type="text" value={this.state.data.siteName}
                                         name="siteName" id="siteName" placeholder="Enter Site Name" />
                                 </FormGroup>
                             </Col>
@@ -113,7 +144,7 @@ class ProjectForm extends React.Component{
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="status">Status</Label>
-                                    <Input disabled onChange={this.handleInputChange} type="select" 
+                                    <Input disabled onChange={this.handleInputChange} type="select"  value={this.state.data.status}
                                         name="status" id="status">
                                         <option value='new'>New</option>
                                         <option value='ongoing' >OnGoing</option>
@@ -124,7 +155,7 @@ class ProjectForm extends React.Component{
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="assignedTo">Assigned To</Label>
-                                    <Input onChange={this.handleInputChange} type="select" name="assignedToId" 
+                                    <Input onChange={this.handleInputChange} type="select" name="assignedToId"  value={this.state.data.assignedToId}
                                         id="assignedToId">
                                         <option value='0'> -- Please Select -- </option>
                                         { userOptions }

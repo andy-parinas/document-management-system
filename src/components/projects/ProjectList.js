@@ -54,16 +54,18 @@ class ProjectList extends React.Component{
         this.setState(prevState =>({
             ...prevState,
             modal: !prevState.modal,
-            action: 'new'
+            action: 'new',
+            selectedProject: null
         }))
     }
 
     handleEditProject = (selectedProject) => {
+        console.log(selectedProject)
         this.setState(prevState =>({
             ...prevState,
             modal: !prevState.modal,
             action: 'edit',
-            selectedObject: selectedProject
+            selectedProject: selectedProject
         }))
     }
 
@@ -87,6 +89,8 @@ class ProjectList extends React.Component{
 
 
     render(){
+
+        console.log(this.state.selectedProject)
 
         const {projects, loading} = this.props;
 
