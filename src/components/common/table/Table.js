@@ -82,6 +82,8 @@ class StripedTable extends React.Component{
         const selectedObjectId = this.state.selected[0];
         const selectedObject = this.props.tableData.find(data => data.id === selectedObjectId)
 
+        console.log('Table', selectedObject)
+
         this.props.onEditButtonClicked(selectedObject)
     }
 
@@ -97,7 +99,6 @@ class StripedTable extends React.Component{
             return this.props.tableData.find(data => data.id === selection)
         })
 
-        console.log(selections)
         this.props.onDeleteButtonClicked(selections)
     }
 

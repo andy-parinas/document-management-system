@@ -7,7 +7,7 @@ import {Modal, ModalHeader,
         Row, Col, Button, FormGroup} from 'reactstrap';
 
 import {loadUsers} from '../../store/actions/userActions';
-import { addProject } from '../../store/actions/projectActions';
+import { addProject, updateProject, copyProject } from '../../store/actions/projectActions';
 import PreLoader from '../common/preloader/PreLoader';
 import PreLoaderBar from '../common/preloader/PreLoaderBar';
 
@@ -71,21 +71,54 @@ class ProjectForm extends React.Component{
         
         const selectedUser = this.props.users.find(user => user.id === this.state.data.assignedToId);
 
-        const project = {
-            ...this.state.data,
-            assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
-        }
+        if(this.props.action === 'new'){
 
-        this.props.addProject(project, (projectId)=>{
-            this.props.push(`/projects/${projectId}`)
-        })
+            const project = {
+                name: this.state.data.name,
+                siteNumber: this.state.data.siteNumber,
+                siteName: this.state.data.siteName,
+                status: this.state.data.status,
+                assignedToId: this.state.data.assignedToId,
+                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
+            }
+    
+            this.props.addProject(project, (projectId)=>{
+                this.props.push(`/projects/${projectId}`)
+            })
+
+        }else if(this.props.action === 'edit'){
+
+            const project = {
+                name: this.state.data.name,
+                siteNumber: this.state.data.siteNumber,
+                siteName: this.state.data.siteName,
+                status: this.state.data.status,
+                assignedToId: this.state.data.assignedToId,
+                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
+            }
+
+            this.props.updateProject(this.props.project.id, project, () => {
+                this.props.push(`/projects/${this.props.project.id}`)
+            })
+
+        }else if(this.props.action === 'copy'){
+
+            const project = {
+                name: this.state.data.name,
+                siteNumber: this.state.data.siteNumber,
+                siteName: this.state.data.siteName,
+                status: this.state.data.status,
+                assignedToId: this.state.data.assignedToId,
+                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
+            }
+
+            this.props.copyProject(this.state.data.id, project, (newProjectId)=>{
+                this.props.push(`/projects/${newProjectId}`)
+            })
+        }
     }
 
     render(){
-
-        console.log('Project Form', this.props)
-
-        console.log('Project Form', this.state)
 
         const loader = <div>
                             Saving... <PreLoader />
@@ -144,7 +177,7 @@ class ProjectForm extends React.Component{
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="status">Status</Label>
-                                    <Input disabled onChange={this.handleInputChange} type="select"  value={this.state.data.status}
+                                    <Input disabled={this.props.action !== 'new'? false : true} onChange={this.handleInputChange} type="select"  value={this.state.data.status}
                                         name="status" id="status">
                                         <option value='new'>New</option>
                                         <option value='ongoing' >OnGoing</option>
@@ -187,7 +220,9 @@ const mapStateToProps = state => {
 const mapDispatchToProp = dispatch => {
     return {
         loadUsers: () => dispatch(loadUsers()),
-        addProject: (project, callback) => dispatch(addProject(project, callback))
+        addProject: (project, callback) => dispatch(addProject(project, callback)),
+        updateProject: (id, updates, callback) => dispatch(updateProject(id, updates, callback)),
+        copyProject: (sourceId, desProject, callback) => dispatch(copyProject(sourceId, desProject, callback))
     }
 }
 

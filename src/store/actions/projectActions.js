@@ -146,45 +146,121 @@ export const getProject =(id) => dispatch => {
 
 export const updateProject = (id, updates, callback) => (dispatch, getState) => {
 
-    const tasks = getState().projects.project.tasks
-
     dispatch({
         type: START_SUB_LOADING
     })
 
-    db.collection('projects').doc(id).set({
+    const projectRef = db.collection('projects').doc(id);
+
+    console.log(projectRef)
+
+    projectRef.update({
         ...updates
-    }).then(result => {
-
-        const project = {
-            id: id,
-            ...updates,
-            tasks: tasks
-        }
-
-        dispatch({
-            type: PROJECT_DETAIL,
-            project: project
-        })
+    }).then(() => {
 
         dispatch({
             type: END_SUB_LOADING
         })
 
-        dispatch({
-            type: OPEN_SNACKBAR,
-            message: 'Project Successfully Updated'
-        })
-
         if(callback) callback();
 
+
     }).catch(error => {
+
         console.log(error)
         dispatch({
             type: END_SUB_LOADING
         })
 
     })
+
+}
+
+export const copyProject = (sourceId, desProject, callback) => dispatch => {
+
+    dispatch({
+        type: START_SUB_LOADING
+    })
+
+
+    const sourceRef = db.collection('projects').doc(sourceId);
+
+    sourceRef.get().then(sourceDoc => {
+
+        if(sourceDoc.exists){
+
+            db.collection('projects').add(desProject).then(newProjeRef => {
+               
+                //Get the Tasks subcollection of the Source Project.
+                sourceRef.collection('tasks').get().then(sourceTasks => {
+
+                    //Check if the Tasks subcollection contains data.
+                    if(sourceTasks.size > 0){
+                        const batch = db.batch();
+
+                        sourceTasks.forEach(task => {
+                            const taskRef = newProjeRef.collection('tasks').doc();
+                            const tempTask = {...task.data()};
+
+                            batch.set(taskRef, {name: tempTask.name, imageCount: 0, status: 'new'})
+                        })
+
+                        batch.commit().then(() => {
+                            //Completed creating a batch collection of Task.
+                            //Actions needed for completed copying of project and tasks.
+                            dispatch({
+                                type: END_SUB_LOADING
+                            })
+
+                            if(callback) callback(newProjeRef.id)
+
+                        }).catch(error => {
+                            //Error in batch processing for creating tasks collection
+                            dispatch({
+                                type: END_SUB_LOADING
+                            })
+
+                            console.log('Error in batch Proessing', error)
+                        })
+
+                    }else {
+                        //No Task Collection to be added
+                        //Actions needed for the complete copying of project without tasks
+                        dispatch({
+                            type: END_SUB_LOADING
+                        })
+
+                        if(callback) callback(newProjeRef.id)
+                    }
+
+                }).catch(error => {
+                    //Error in getting Task Subcollection of Source Project
+                    dispatch({
+                        type: END_SUB_LOADING
+                    })
+
+                    console.log('Error in Getting Task Subcollection', error)
+                })
+
+            }).catch(error => {
+                //Error in Creating the new Project.
+                //Action for error in creating project
+                dispatch({
+                    type: END_SUB_LOADING
+                })
+            })
+
+        }
+
+
+    }).catch(error => {
+        //Error in getting source Refe
+
+        dispatch({
+            type: END_SUB_LOADING
+        })
+    })
+
 
 }
 

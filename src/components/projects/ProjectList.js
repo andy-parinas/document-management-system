@@ -51,16 +51,24 @@ class ProjectList extends React.Component{
     }
 
     handleNewProject = () => {
+
+        const initializeProject = {
+            id: 0,
+            name: '',
+            siteNumber: '',
+            siteName: '',
+            assignedToId: '',
+            status: 'new'
+        }
         this.setState(prevState =>({
             ...prevState,
             modal: !prevState.modal,
             action: 'new',
-            selectedProject: null
+            selectedProject: initializeProject
         }))
     }
 
     handleEditProject = (selectedProject) => {
-        console.log(selectedProject)
         this.setState(prevState =>({
             ...prevState,
             modal: !prevState.modal,
@@ -79,7 +87,7 @@ class ProjectList extends React.Component{
     }
 
     handleDeleteProject = (selectedProjects) => {
-        console.log('Delete Handler', this.state.delete)
+
         this.setState(prevState =>({
             ...prevState,
             delete: !prevState.delete,
@@ -89,8 +97,6 @@ class ProjectList extends React.Component{
 
 
     render(){
-
-        console.log(this.state.selectedProject)
 
         const {projects, loading} = this.props;
 
