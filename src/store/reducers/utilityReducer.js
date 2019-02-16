@@ -1,8 +1,9 @@
-import {START_LOADING, END_LOADING, START_SUB_LOADING, END_SUB_LOADING, OPEN_SNACKBAR, CLOSE_SNACKBAR} from '../actions/actionTypes';
+import {START_LOADING, END_LOADING, START_SUB_LOADING, END_SUB_LOADING, OPEN_SNACKBAR, CLOSE_SNACKBAR, START_TASK_LOADING, END_TASK_LOADING} from '../actions/actionTypes';
 
 const initialState = {
     loading: false,
     subLoading: false,
+    taskLoading: false,
     snackbar: null
 }
 
@@ -32,6 +33,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 subLoading: false
+            }
+
+        case START_TASK_LOADING:
+            return {
+                ...state,
+                taskLoading: true
+            }
+
+        case END_TASK_LOADING: 
+            return {
+                ...state,
+                taskLoading: false
             }
         
         case OPEN_SNACKBAR:

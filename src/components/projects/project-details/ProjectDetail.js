@@ -61,11 +61,11 @@ class ProjectDetail extends React.Component {
                         <ProjectDetailHeader project={project} />
 
                         <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } 
-                            onGetTaskDetail={this.handleTaskDetail}  />
+                            onGetTaskDetail={this.handleTaskDetail} projectId={this.props.match.params.id} />
 
                         <ProjectDetailControl onAddTask={this.toggle}  />
                     </Card>
-                    <TaskForm modal={this.state.modal} toggle={this.toggle} />
+                    <TaskForm modal={this.state.modal} toggle={this.toggle} projectId={this.props.match.params.id} />
                </React.Fragment>
             )
         }

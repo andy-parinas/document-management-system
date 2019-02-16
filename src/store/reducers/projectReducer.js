@@ -3,7 +3,7 @@ import {PROJECT_LIST, PROJECT_DETAIL, PROJECT_TASKS, DELETE_PROJECT} from '../ac
 const initialState = {
     projects: [],
     project: null,
-    projectTasks: [],
+    projectTasks: null,
     messagetype: null,
     message: null
 }

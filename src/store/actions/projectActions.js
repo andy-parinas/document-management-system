@@ -2,7 +2,7 @@ import db from '../../config/Firebase';
 
 import {PROJECT_LIST, ADD_PROJECT, PROJECT_DETAIL, 
     START_LOADING, END_LOADING, PROJECT_TASKS, START_SUB_LOADING, 
-    END_SUB_LOADING, CLOSE_SNACKBAR, OPEN_SNACKBAR, TASK_ERROR, TASK_DETAIL} from './actionTypes'
+    END_SUB_LOADING, CLOSE_SNACKBAR, OPEN_SNACKBAR, TASK_ERROR, TASK_DETAIL, START_TASK_LOADING, END_TASK_LOADING} from './actionTypes'
 
 
 
@@ -107,8 +107,7 @@ export const getProject =(id) => dispatch => {
 
                 const project = {
                     id: doc.id,
-                    ...doc.data(),
-                    tasks: tasks
+                    ...doc.data()
                 }
 
                 dispatch({
@@ -305,16 +304,15 @@ export const deleteProjects = (projects, callback) => dispatch => {
 }
 
 export const getProjectTasks = (id) => dispatch => {
+      
+    dispatch({
+        type: START_TASK_LOADING
+    })
 
     const docRef = db.collection('projects').doc(id);
 
     docRef.collection('tasks').get().then(collections => {
-        
-        dispatch({
-            type: START_SUB_LOADING
-        })
-
-
+      
         const data = [];
         
         if(collections.size > 0){
@@ -337,7 +335,7 @@ export const getProjectTasks = (id) => dispatch => {
         
 
         dispatch({
-            type: END_SUB_LOADING
+            type: END_TASK_LOADING
         })
 
 
@@ -346,7 +344,7 @@ export const getProjectTasks = (id) => dispatch => {
         console.log(error);
 
         dispatch({
-            type: END_SUB_LOADING
+            type: END_TASK_LOADING
         })
 
     })
@@ -433,9 +431,58 @@ export const getTask = (projectId, taskId) => dispatch => {
 }
 
 
-export const addTask = (projectId, task, callback) => {
+export const addTask = (projectId, task, callback) => dispatch => {
 
+      
+    dispatch({
+        type: START_SUB_LOADING
+    })
+
+    const projectRef = db.collection('projects').doc(projectId)
     
+    projectRef.get().then(projectDoc => {
+
+        if(projectDoc.exists){
+
+            projectRef.collection('tasks').add(task).then(taskRef => {
+
+                  
+                dispatch({
+                    type: END_SUB_LOADING
+                })
+
+               //Actions for successfull creation of tasks.
+               if(callback) callback();
+
+            }).catch(error => {
+                //Error creating Task in project collection
+                dispatch({
+                    type: END_SUB_LOADING
+                })
+
+                console.log('Error Adding Task', error);
+            })
+
+
+        }else {
+
+            dispatch({
+                type: END_SUB_LOADING
+            })
+
+            console.log('Project Does not Exist')
+
+        }
+
+    }).catch(error => {
+        //Error Getting Project
+        dispatch({
+            type: END_SUB_LOADING
+        })
+
+        console.log('Error Getting Project', error)
+    })
+
 
 }
 

@@ -9,6 +9,8 @@ export const CLOSE_SNACKBAR = 'close_snackbar';
 export const TASK_DETAIL = 'task_detail';
 export const TASK_IMAGES = 'task_images';
 export const TASK_ERROR = 'task_error';
+export const START_TASK_LOADING = 'start_task_loading';
+export const END_TASK_LOADING = 'end_task_loading';
 
 
 export const PROJECT_LIST = 'project_list';

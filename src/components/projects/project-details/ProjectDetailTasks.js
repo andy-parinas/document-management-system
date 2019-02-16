@@ -1,7 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 import withStyles from 'react-jss';
 
 import {CardBody, CardTitle, ListGroup, ListGroupItem, Badge, Button} from 'reactstrap'
+import { getProjectTasks } from '../../../store/actions/projectActions';
+import PreLoader from '../../common/preloader/PreLoader';
 
 
 
@@ -25,53 +29,76 @@ const styles = {
 
 
 
-const ProjectDetailTasks = props => {
+class ProjectDetailTasks extends React.Component {
 
-    const {classes, tasks} = props;
-
-    const taskItems = tasks.map(task => {
-
-        let color = 'success';
-        if(task.status !== 'complete') {
-            color = 'primary'
-        }
-
-        return  (
-            <ListGroupItem key={task.id} > 
-                <div className={classes.itemGroup} >
-                    <div className={classes.itemTitle} >
-                        {task.name} 
-                        <Badge className={classes.badge} pill> {task.imageCount} </Badge>
-                        <Badge color={color}> {task.status } </Badge>
-                    </div>
-                    <div>
-                        <Button size='sm' color='success' onClick={() => props.onGetTaskDetail(task.id)} > View </Button> {' '}
-                        <Button size='sm' color='warning' > Edit </Button> {' '}
-                        <Button size='sm' color='danger' > Delete </Button>
-                    </div>
-                </div>
-            </ListGroupItem>
-        )
-    })
-
-    let content = <h2> No Task Found </h2>
-
-    if(tasks.length > 0 ){
-        content = (
-            <React.Fragment>
-                <CardTitle> List of Tasks </CardTitle>
-                <ListGroup>
-                    {taskItems}
-                </ListGroup>
-            </React.Fragment>
-        )
+    componentDidMount(){
+        this.props.getProjectTasks(this.props.projectId)
     }
 
-    return(
-        <CardBody>
-            { content }
-       </CardBody>
-    )
+    render(){
+        const {classes, tasks, projectId, projectTasks, loading} = this.props;
+
+        let content = <PreLoader />
+    
+        if(!loading && projectTasks !== null){
+            const taskItems = projectTasks.map(task => {
+    
+                let color = 'success';
+                if(task.status !== 'complete') {
+                    color = 'primary'
+                }
+        
+                return  (
+                    <ListGroupItem key={task.id} > 
+                        <div className={classes.itemGroup} >
+                            <div className={classes.itemTitle} >
+                                {task.name} 
+                                <Badge className={classes.badge} pill> {task.imageCount} </Badge>
+                                <Badge color={color}> {task.status } </Badge>
+                            </div>
+                            <div>
+                                <Button size='sm' color='success' onClick={() => this.props.onGetTaskDetail(task.id)} > View </Button> {' '}
+                                <Button size='sm' color='warning' > Edit </Button> {' '}
+                                <Button size='sm' color='danger' > Delete </Button>
+                            </div>
+                        </div>
+                    </ListGroupItem>
+                )
+            })
+
+            if(projectTasks.length > 0 ){
+                content = (
+                    <React.Fragment>
+                        <CardTitle> List of Tasks </CardTitle>
+                        <ListGroup>
+                            {taskItems}
+                        </ListGroup>
+                    </React.Fragment>
+                )
+            }else {
+                content = <h2>No Task Found</h2>
+            }
+        }
+    
+        return(
+            <CardBody>
+                { content }
+           </CardBody>
+        )
+    }
 }
 
-export default withStyles(styles)(ProjectDetailTasks);
+const mapStateToProps = state => {
+    return {
+        projectTasks: state.projects.projectTasks,
+        taskLoading: state.utility.taskLoading
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getProjectTasks: (projectId) => dispatch(getProjectTasks(projectId))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ProjectDetailTasks));
