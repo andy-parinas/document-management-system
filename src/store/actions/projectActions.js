@@ -432,6 +432,13 @@ export const getTask = (projectId, taskId) => dispatch => {
     })
 }
 
+
+export const addTask = (projectId, task, callback) => {
+
+    
+
+}
+
 export const closeSnackbar = () => dispatch => {
     dispatch({
         type: CLOSE_SNACKBAR

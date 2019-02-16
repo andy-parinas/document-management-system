@@ -31,7 +31,9 @@ const ProjectDetailControl = props => {
         <CardFooter>
             <div className={classes.footer} >
                 <div className={classes.buttonGroup} >
-                    <Button className={classes.button} size='sm' color='primary' >New Task</Button>
+                    <Button 
+                        className={classes.button} 
+                        size='sm' color='primary' onClick={props.onAddTask} >Add Task</Button>
                 </div>
                 <div className={classes.buttonGroup} >
                     <Button className={classes.button} size='sm' color='warning' >Edit</Button>

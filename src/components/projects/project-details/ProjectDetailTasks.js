@@ -45,7 +45,9 @@ const ProjectDetailTasks = props => {
                         <Badge color={color}> {task.status } </Badge>
                     </div>
                     <div>
-                        <Button size='sm' onClick={() => props.onGetTaskDetail(task.id)} > View </Button>
+                        <Button size='sm' color='success' onClick={() => props.onGetTaskDetail(task.id)} > View </Button> {' '}
+                        <Button size='sm' color='warning' > Edit </Button> {' '}
+                        <Button size='sm' color='danger' > Delete </Button>
                     </div>
                 </div>
             </ListGroupItem>

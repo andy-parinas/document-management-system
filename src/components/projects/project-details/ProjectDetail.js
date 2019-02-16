@@ -9,6 +9,7 @@ import ProjectDetailTasks from './ProjectDetailTasks';
 import ProjectDetailHeader from './ProjectDetailHeader';
 import ProjectDetailControl from './ProjectDetailControl';
 import PreLoader from '../../common/preloader/PreLoader';
+import TaskForm from './TaskForm';
 
 
 
@@ -22,11 +23,21 @@ const tasks = [
 
 class ProjectDetail extends React.Component {
 
+    state={
+        modal: false
+    }
+
     componentDidMount(){
         const id = this.props.match.params.id
         this.props.getProject(id);
     }
 
+    toggle = () => {
+        this.setState(prevState =>({
+            ...prevState,
+            modal: !prevState.modal
+        }))
+    }
 
     handleTaskDetail = (taskId) => {
 
@@ -45,14 +56,17 @@ class ProjectDetail extends React.Component {
 
         if(project !== null && !loading){
             projectDetails = (
-                <Card>
-                    <ProjectDetailHeader project={project} />
+               <React.Fragment>
+                    <Card>
+                        <ProjectDetailHeader project={project} />
 
-                    <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } 
-                        onGetTaskDetail={this.handleTaskDetail}  />
+                        <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } 
+                            onGetTaskDetail={this.handleTaskDetail}  />
 
-                    <ProjectDetailControl />
-                </Card>
+                        <ProjectDetailControl onAddTask={this.toggle}  />
+                    </Card>
+                    <TaskForm modal={this.state.modal} toggle={this.toggle} />
+               </React.Fragment>
             )
         }
 
