@@ -10,6 +10,7 @@ import ProjectDetailHeader from './ProjectDetailHeader';
 import ProjectDetailControl from './ProjectDetailControl';
 import PreLoader from '../../common/preloader/PreLoader';
 import TaskForm from './TaskForm';
+import TaskDeleteDialog from './TaskDeleteDialog';
 
 
 
@@ -24,7 +25,10 @@ const tasks = [
 class ProjectDetail extends React.Component {
 
     state={
-        modal: false
+        modal: false,
+        deleteModal: false,
+        selectedTaskId: null,
+        selectedTaskName: null
     }
 
     componentDidMount(){
@@ -36,6 +40,16 @@ class ProjectDetail extends React.Component {
         this.setState(prevState =>({
             ...prevState,
             modal: !prevState.modal
+        }))
+    }
+
+    toggleDelete = (taskId, taskName) => {
+       
+        this.setState(prevState =>({
+            ...prevState,
+            deleteModal: !prevState.deleteModal,
+            selectedTaskId: taskId,
+            selectedTaskName: taskName
         }))
     }
 
@@ -60,12 +74,17 @@ class ProjectDetail extends React.Component {
                     <Card>
                         <ProjectDetailHeader project={project} />
 
-                        <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } 
+                        <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } onTaskDelete={this.toggleDelete}
                             onGetTaskDetail={this.handleTaskDetail} projectId={this.props.match.params.id} />
 
                         <ProjectDetailControl onAddTask={this.toggle}  />
                     </Card>
                     <TaskForm modal={this.state.modal} toggle={this.toggle} projectId={this.props.match.params.id} />
+                    <TaskDeleteDialog modal={this.state.deleteModal} 
+                        projectId={this.props.match.params.id}
+                        toggle={this.toggleDelete} 
+                        taskId={this.state.selectedTaskId}
+                        taskName={this.state.selectedTaskName} />
                </React.Fragment>
             )
         }

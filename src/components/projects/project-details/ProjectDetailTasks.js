@@ -59,7 +59,8 @@ class ProjectDetailTasks extends React.Component {
                             <div>
                                 <Button size='sm' color='success' onClick={() => this.props.onGetTaskDetail(task.id)} > View </Button> {' '}
                                 <Button size='sm' color='warning' > Edit </Button> {' '}
-                                <Button size='sm' color='danger' > Delete </Button>
+                                <Button size='sm' color='danger' 
+                                    onClick={() => this.props.onTaskDelete(task.id, task.name)} > Delete </Button>
                             </div>
                         </div>
                     </ListGroupItem>

@@ -486,6 +486,58 @@ export const addTask = (projectId, task, callback) => dispatch => {
 
 }
 
+export const deleteTask = (projectId, taskId, callback) => dispatch => {
+
+    dispatch({
+        type: START_SUB_LOADING
+    })
+
+    const projectRef = db.collection('projects').doc(projectId);
+
+    projectRef.get().then(projectDoc => {
+
+        if(projectDoc.exists){
+
+            projectRef.collection('tasks').doc(taskId).delete().then(() => {
+
+                dispatch({
+                    type: END_SUB_LOADING
+                })
+
+                if(callback) callback();
+
+            }).catch(error => {
+                //Error Deleting tasks
+                dispatch({
+                    type: END_SUB_LOADING
+                })
+
+                console.log(error)
+            })
+
+
+        }else {
+            //Project Document does not exist
+
+            dispatch({
+                type: END_SUB_LOADING
+            })
+
+            console.log('Project document does not exist')
+        }
+
+
+    }).catch(error => {
+
+        // Error Loading the Project Document
+        dispatch({
+            type: END_SUB_LOADING
+        })
+        console.log(error)
+
+    })
+}
+
 export const closeSnackbar = () => dispatch => {
     dispatch({
         type: CLOSE_SNACKBAR
