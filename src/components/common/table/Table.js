@@ -140,6 +140,7 @@ class StripedTable extends React.Component{
                         onEditButtonClicked={this.handleEditButtonClicked}
                         onCopyButtonClicked={this.handleCopyButtonClicked}
                         onDeleteButtonClicked={this.handleDeleteButtonClicked}
+                        onRefreshClicked={this.props.onRefreshClicked}
                         numSelected={this.state.selected.length} 
                         title={this.props.title} />
                 </CardHeader>

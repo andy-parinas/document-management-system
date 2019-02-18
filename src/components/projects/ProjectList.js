@@ -1,15 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import {Container} from 'reactstrap';
 
-import {loadProjects} from '../../store/actions/projectActions';
+import {loadProjects, searchProjects} from '../../store/actions/projectActions';
 import {loadUsers} from '../../store/actions/userActions';
 
 import Table from '../common/table/Table';
 import PreLoader from '../common/preloader/PreLoader';
 import ProjectForm from './ProjectForm';
 import ProjectDeleteDialog from './ProjectDeleteDialog';
+import ProjectSearch from './ProjectSearch';
+
+
 
 const columns = [
     {id: 'name', name: 'Project Name'},
@@ -110,12 +112,19 @@ class ProjectList extends React.Component{
                                 onNewButtonClicked={this.handleNewProject}
                                 onDeleteButtonClicked={this.handleDeleteProject}
                                 onShowDetail={this.handleShowProjectDetail}
+                                onRefreshClicked={this.props.loadProjects}
                                 tableData={this.props.projects} 
                                 title='Project List' />
+        }else if(projects.length === 0 && !loading){
+            projectList = <h2> No Projects Found </h2>
         }
 
         return(
             <Container className='container'>
+                <ProjectSearch />
+                <div>
+                    { projectList }
+                </div>
                 <ProjectDeleteDialog modal={this.state.delete}
                     toggle={this.toggleDelete} projects={this.state.selectedProjects} />
                 <ProjectForm
@@ -124,9 +133,6 @@ class ProjectList extends React.Component{
                     action={this.state.action} 
                     modal={this.state.modal} 
                     toggle={this.toggle} />
-                <div>
-                    { projectList }
-                </div>
             </Container>
         )
     }

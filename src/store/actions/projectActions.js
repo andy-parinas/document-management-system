@@ -303,6 +303,44 @@ export const deleteProjects = (projects, callback) => dispatch => {
     })
 }
 
+
+export const searchProjects = (projectName) =>  dispatch => {
+
+    dispatch({
+        type: START_LOADING
+    })
+
+    const projectRef = db.collection('projects');
+
+    projectRef.where("name" , "==", projectName  ).get().then(results => {
+       
+        const projects = []
+
+        results.forEach(doc => {
+            const project = {
+                id: doc.id,
+                ...doc.data()
+            }
+
+            projects.push(project)
+        })
+
+
+        dispatch({
+            type: PROJECT_LIST,
+            projects: projects
+        })
+
+        dispatch({
+            type: END_LOADING
+        })
+
+    })
+
+    
+}
+
+
 export const getProjectTasks = (id) => dispatch => {
       
     dispatch({

@@ -25,7 +25,7 @@ const TableToolbar = props => {
         controls =  <div>
                         <Button onClick={() => props.onNewButtonClicked('new') }
                             className={classes.button} size="sm" color='primary' >  New Project </Button>
-                        <Button className={classes.button} size="sm" color='success'>  Refresh List </Button>
+                        <Button onClick={props.onRefreshClicked} className={classes.button} size="sm" color='success'>  Refresh List </Button>
                     </div>
     }else if(numSelected >= 1){
 
