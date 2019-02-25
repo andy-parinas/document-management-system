@@ -14,7 +14,8 @@ export const loadProjects = () => dispatch => {
         type: START_LOADING
     })
 
-    db.collection("projects").get().then(querySnapshot => {
+
+    db.collection("projects").orderBy("createdAt", 'desc').limit(10).get().then(querySnapshot => {
 
         querySnapshot.forEach((doc) => {
             const document = {
@@ -26,7 +27,8 @@ export const loadProjects = () => dispatch => {
 
         dispatch({
             type: PROJECT_LIST,
-            projects: data
+            projects: data,
+            itemCount: querySnapshot.size
         })
 
         dispatch({
@@ -41,7 +43,16 @@ export const loadProjects = () => dispatch => {
         })
 
     })
+
+
+
+  
 }
+
+export const loadMore = (itemCount) => dispatch => {
+    // db.collection('projects').orderBy('name')
+}
+
 
 export const addProject = (project, callback) => dispatch => {
 

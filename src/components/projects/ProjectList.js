@@ -10,7 +10,9 @@ import PreLoader from '../common/preloader/PreLoader';
 import ProjectForm from './ProjectForm';
 import ProjectDeleteDialog from './ProjectDeleteDialog';
 import ProjectSearch from './ProjectSearch';
+import PreLoaderBar from '../common/preloader/PreLoaderBar';
 
+import {Button} from 'reactstrap';
 
 
 const columns = [
@@ -133,6 +135,7 @@ class ProjectList extends React.Component{
                     action={this.state.action} 
                     modal={this.state.modal} 
                     toggle={this.toggle} />
+                <PreLoaderBar isLoading={this.props.subLoading} />
             </Container>
         )
     }
@@ -141,7 +144,8 @@ class ProjectList extends React.Component{
 const mapStateToProps = state => {
     return {
         projects: state.projects.projects,
-        loading: state.utility.loading
+        loading: state.utility.loading,
+        subLoading: state.utility.subLoading
     }
 }
 

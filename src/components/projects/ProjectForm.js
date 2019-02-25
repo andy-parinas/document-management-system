@@ -79,7 +79,9 @@ class ProjectForm extends React.Component{
                 siteName: this.state.data.siteName,
                 status: this.state.data.status,
                 assignedToId: this.state.data.assignedToId,
-                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
+                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`,
+                createdAt: Date.now(),
+                updatedAt: Date.now()
             }
     
             this.props.addProject(project, (projectId)=>{
@@ -94,7 +96,8 @@ class ProjectForm extends React.Component{
                 siteName: this.state.data.siteName,
                 status: this.state.data.status,
                 assignedToId: this.state.data.assignedToId,
-                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
+                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`,
+                updatedAt: Date.now()
             }
 
             this.props.updateProject(this.props.project.id, project, () => {
@@ -109,7 +112,9 @@ class ProjectForm extends React.Component{
                 siteName: this.state.data.siteName,
                 status: this.state.data.status,
                 assignedToId: this.state.data.assignedToId,
-                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`
+                assignedToName: `${selectedUser.firstName} ${selectedUser.lastName}`,
+                createdAt: Date.now(),
+                updatedAt: Date.now()
             }
 
             this.props.copyProject(this.state.data.id, project, (newProjectId)=>{

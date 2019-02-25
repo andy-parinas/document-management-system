@@ -151,7 +151,10 @@ class StripedTable extends React.Component{
                             { rowData }
                         </tbody>
                     </Table>
+                    <Button> Load More ... </Button>
                 </CardBody>
+                
+                
             </Card>
         )
     }

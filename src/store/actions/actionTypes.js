@@ -18,6 +18,7 @@ export const ADD_PROJECT = 'add_user';
 export const PROJECT_DETAIL = 'project_detail';
 export const PROJECT_TASKS = 'project_tasks';
 export const DELETE_PROJECT = 'delete_project';
+export const PROJECT_LOAD_MORE = 'project_load_more';
 
 export const AUTH_SUCCESS = 'user_login';
 export const USER_LOGOUT = 'user_logout';

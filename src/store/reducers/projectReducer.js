@@ -5,7 +5,8 @@ const initialState = {
     project: null,
     projectTasks: null,
     messagetype: null,
-    message: null
+    message: null,
+    itemCount: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -14,7 +15,8 @@ const reducer = (state = initialState, action) => {
         case PROJECT_LIST:
             return {
                 ...state,
-                projects: action.projects
+                projects: action.projects,
+                itemCount: action.itemCount
             }
         case PROJECT_DETAIL:
             return {
