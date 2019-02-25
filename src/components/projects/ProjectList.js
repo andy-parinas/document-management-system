@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Container} from 'reactstrap';
 
-import {loadProjects, searchProjects} from '../../store/actions/projectActions';
+import {loadProjects, searchProjects, loadMore} from '../../store/actions/projectActions';
 import {loadUsers} from '../../store/actions/userActions';
 
 import Table from '../common/table/Table';
@@ -106,7 +106,7 @@ class ProjectList extends React.Component{
 
         let projectList = <PreLoader />
 
-        if(projects.length > 0 && !loading){
+        if(!loading){
 
             projectList = <Table columns={columns} 
                                 onCopyButtonClicked={this.handleCopyProject}
@@ -115,10 +115,10 @@ class ProjectList extends React.Component{
                                 onDeleteButtonClicked={this.handleDeleteProject}
                                 onShowDetail={this.handleShowProjectDetail}
                                 onRefreshClicked={this.props.loadProjects}
+                                onLoadMore={this.props.loadMore}
                                 tableData={this.props.projects} 
+                                isEnd={this.props.isEnd}
                                 title='Project List' />
-        }else if(projects.length === 0 && !loading){
-            projectList = <h2> No Projects Found </h2>
         }
 
         return(
@@ -144,6 +144,7 @@ class ProjectList extends React.Component{
 const mapStateToProps = state => {
     return {
         projects: state.projects.projects,
+        isEnd: state.projects.isEnd,
         loading: state.utility.loading,
         subLoading: state.utility.subLoading
     }
@@ -151,7 +152,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadProjects: () => dispatch(loadProjects())
+        loadProjects: () => dispatch(loadProjects()),
+        loadMore: () => dispatch(loadMore())
     }
 }
 

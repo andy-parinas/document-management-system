@@ -2,7 +2,7 @@ import db from '../../config/Firebase';
 
 import {PROJECT_LIST, ADD_PROJECT, PROJECT_DETAIL, 
     START_LOADING, END_LOADING, PROJECT_TASKS, START_SUB_LOADING, 
-    END_SUB_LOADING, CLOSE_SNACKBAR, OPEN_SNACKBAR, TASK_ERROR, TASK_DETAIL, START_TASK_LOADING, END_TASK_LOADING} from './actionTypes'
+    END_SUB_LOADING, CLOSE_SNACKBAR, OPEN_SNACKBAR, TASK_ERROR, TASK_DETAIL, START_TASK_LOADING, END_TASK_LOADING, PROJECT_LOAD_MORE} from './actionTypes'
 
 
 
@@ -15,7 +15,7 @@ export const loadProjects = () => dispatch => {
     })
 
 
-    db.collection("projects").orderBy("createdAt", 'desc').limit(10).get().then(querySnapshot => {
+    db.collection("projects").orderBy("createdAt", 'desc').limit(5).get().then(querySnapshot => {
 
         querySnapshot.forEach((doc) => {
             const document = {
@@ -25,10 +25,13 @@ export const loadProjects = () => dispatch => {
             data.push(document);
         });
 
+        const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+
         dispatch({
             type: PROJECT_LIST,
             projects: data,
-            itemCount: querySnapshot.size
+            itemCount: querySnapshot.size,
+            lastDoc: lastVisible
         })
 
         dispatch({
@@ -49,8 +52,39 @@ export const loadProjects = () => dispatch => {
   
 }
 
-export const loadMore = (itemCount) => dispatch => {
-    // db.collection('projects').orderBy('name')
+export const loadMore = () => (dispatch, getState) => {
+    db.collection("projects")
+        .orderBy("createdAt", 'desc')
+        .startAfter(getState().projects.lastDoc)
+        .limit(5).get().then(querySnapshot => {
+
+            const data = [];
+            let isEnd: false;
+            const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+
+            if(querySnapshot.size > 0){
+                querySnapshot.forEach((doc) => {
+                    const document = {
+                        id: doc.id,
+                        ...doc.data()
+                    }
+    
+                    data.push(document);
+                });
+            }else {
+                isEnd = true;
+            }
+
+            dispatch({
+                type: PROJECT_LOAD_MORE,
+                projects: data,
+                lastDoc: lastVisible,
+                isEnd: isEnd
+            })
+
+        }).catch(error => {
+            console.log(error)
+        })
 }
 
 

@@ -1,4 +1,4 @@
-import {PROJECT_LIST, PROJECT_DETAIL, PROJECT_TASKS, DELETE_PROJECT} from '../actions/actionTypes'
+import {PROJECT_LIST, PROJECT_DETAIL, PROJECT_TASKS, DELETE_PROJECT, PROJECT_LOAD_MORE} from '../actions/actionTypes'
 
 const initialState = {
     projects: [],
@@ -6,7 +6,8 @@ const initialState = {
     projectTasks: null,
     messagetype: null,
     message: null,
-    itemCount: 0
+    isEnd: false,
+    lastDoc: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +17,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 projects: action.projects,
-                itemCount: action.itemCount
+                lastDoc: action.lastDoc,
+                isEnd: false
             }
         case PROJECT_DETAIL:
             return {
@@ -24,6 +26,14 @@ const reducer = (state = initialState, action) => {
                 project: action.project
             }
 
+        case PROJECT_LOAD_MORE:
+            // console.log('Reducer State', state)
+            return {
+                ...state,
+                projects: [...state.projects, ...action.projects],
+                lastDoc: action.lastDoc,
+                isEnd: action.isEnd
+            }
         case PROJECT_TASKS:
             return {
                 ...state,

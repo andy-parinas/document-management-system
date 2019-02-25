@@ -109,28 +109,47 @@ class StripedTable extends React.Component{
         
         const {tableData, columns, classes} = this.props;
 
-        const rowData = tableData.map(data => {
+        let tableContent = <h2>No data found</h2>
 
-            const row = columns.map(column => <td key={column.id} >{data[column.id]}</td>)
+        if(tableData.length > 0 ){
+            const rowData = tableData.map(data => {
 
-            const selected = this.isSelected((data.id).toString());
+                const row = columns.map(column => <td key={column.id} >{data[column.id]}</td>)
+    
+                const selected = this.isSelected((data.id).toString());
+    
+                return <tr key={Math.random()}>
+                            <td className={classes.rowCheckbox} >
+                              <div>
+                              <input id={data.id}  onChange={this.handleItemSelected}  checked={selected}
+                                         type="checkbox" />
+                              </div>
+                            </td>
+                            {row}
+                            <td className={classes.rowControl} >
+                                <Button 
+                                    onClick={() => this.props.onShowDetail(data.id)} size="sm">
+                                    Details >
+                                </Button>
+                            </td>
+                        </tr>
+            })
 
-            return <tr key={Math.random()}>
-                        <td className={classes.rowCheckbox} >
-                          <div>
-                          <input id={data.id}  onChange={this.handleItemSelected}  checked={selected}
-                                     type="checkbox" />
-                          </div>
-                        </td>
-                        {row}
-                        <td className={classes.rowControl} >
-                            <Button 
-                                onClick={() => this.props.onShowDetail(data.id)} size="sm">
-                                Details >
-                            </Button>
-                        </td>
-                    </tr>
-        })
+            tableContent = (
+                <React.Fragment>
+                     <Table striped >
+                        <TableHead columns={this.props.columns}  onSelectAll={this.handleSelectAll}  />
+                        <tbody>
+                            { rowData }
+                        </tbody>
+                    </Table>
+                    {
+                        this.props.isEnd ? <h3>No more</h3> :  <Button onClick={this.props.onLoadMore} > Load More ... </Button>
+                    }
+                </React.Fragment>
+            )
+
+        }
 
         return(
             <Card>
@@ -145,13 +164,7 @@ class StripedTable extends React.Component{
                         title={this.props.title} />
                 </CardHeader>
                 <CardBody>
-                    <Table striped >
-                        <TableHead columns={this.props.columns}  onSelectAll={this.handleSelectAll}  />
-                        <tbody>
-                            { rowData }
-                        </tbody>
-                    </Table>
-                    <Button> Load More ... </Button>
+                    { tableContent }
                 </CardBody>
                 
                 
