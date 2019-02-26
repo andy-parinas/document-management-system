@@ -11,6 +11,8 @@ import ProjectDetailControl from './ProjectDetailControl';
 import PreLoader from '../../common/preloader/PreLoader';
 import TaskForm from './TaskForm';
 import TaskDeleteDialog from './TaskDeleteDialog';
+import ProjectForm from '../ProjectForm';
+import ProjectDeleteDialog from '../ProjectDeleteDialog';
 
 
 
@@ -24,11 +26,14 @@ const tasks = [
 
 class ProjectDetail extends React.Component {
 
-    state={
-        modal: false,
-        deleteModal: false,
+    state = {
+        taskFormModal: false,
+        deleteTaskModal: false,
+        deleteProjectModal: false,
+        projectFormModal: false,
         selectedTaskId: null,
-        selectedTaskName: null
+        selectedTaskName: null,
+        action: 'edit'
     }
 
     componentDidMount(){
@@ -36,20 +41,35 @@ class ProjectDetail extends React.Component {
         this.props.getProject(id);
     }
 
-    toggle = () => {
+    toggleTaskForm = () => {
         this.setState(prevState =>({
             ...prevState,
-            modal: !prevState.modal
+            taskFormModal: !prevState.taskFormModal
         }))
     }
 
-    toggleDelete = (taskId, taskName) => {
+    toggleDeleteTask = (taskId, taskName) => {
        
         this.setState(prevState =>({
             ...prevState,
-            deleteModal: !prevState.deleteModal,
+            deleteTaskModal: !prevState.deleteTaskModal,
             selectedTaskId: taskId,
             selectedTaskName: taskName
+        }))
+    }
+
+    toggleDeleteProject = () => {
+        this.setState(prevState =>({
+            ...prevState,
+            deleteProjectModal: !prevState.deleteProjectModal
+        }))
+    }
+
+    toggleProjectForm = (action) => {
+        this.setState(prevState =>({
+            ...prevState,
+            projectFormModal: !prevState.projectFormModal,
+            action: action
         }))
     }
 
@@ -58,6 +78,22 @@ class ProjectDetail extends React.Component {
         const projectId = this.props.match.params.id;
 
         this.props.history.push(`/projects/${projectId}/task?id=${taskId}`)
+    }
+
+    editCallback = (projectId) => {
+        this.props.getProject(projectId);
+        this.toggleProjectForm();
+    }
+
+    copyCallback = (projectId) => {
+        this.props.history.push(`/projects/${projectId}`)
+        this.props.getProject(projectId);
+        this.toggleProjectForm();
+    }
+
+    deleteCallback = () => {
+        this.props.history.push('/projects');
+        this.toggleDeleteProject();
     }
 
     render(){
@@ -77,14 +113,30 @@ class ProjectDetail extends React.Component {
                         <ProjectDetailTasks tasks={ project.tasks? project.tasks : null } onTaskDelete={this.toggleDelete}
                             onGetTaskDetail={this.handleTaskDetail} projectId={this.props.match.params.id} />
 
-                        <ProjectDetailControl onAddTask={this.toggle}  />
+                        <ProjectDetailControl onAddTask={this.toggleTaskForm} 
+                                onEditCopyProject={this.toggleProjectForm} 
+                                onDeleteProject={this.toggleDeleteProject} />
                     </Card>
-                    <TaskForm modal={this.state.modal} toggle={this.toggle} projectId={this.props.match.params.id} />
-                    <TaskDeleteDialog modal={this.state.deleteModal} 
+                    <TaskForm modal={this.state.taskFormModal} toggle={this.toggleTaskForm} projectId={this.props.match.params.id} />
+
+                    <TaskDeleteDialog modal={this.state.deleteTaskModal} 
                         projectId={this.props.match.params.id}
-                        toggle={this.toggleDelete} 
+                        toggle={this.toggleDeleteTask} 
                         taskId={this.state.selectedTaskId}
                         taskName={this.state.selectedTaskName} />
+
+                    <ProjectForm
+                        push={this.props.history.push}
+                        project={this.props.project}
+                        action={this.state.action} 
+                        modal={this.state.projectFormModal} 
+                        toggle={this.toggleProjectForm} 
+                        editCallback={this.editCallback}
+                        copyCallback={this.copyCallback} />
+
+                    <ProjectDeleteDialog modal={this.state.deleteProjectModal}
+                        toggle={this.toggleDeleteProject} projects={[this.props.project]}
+                        deleteCallback={this.deleteCallback} />
                </React.Fragment>
             )
         }

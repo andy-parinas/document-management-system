@@ -99,6 +99,15 @@ class ProjectList extends React.Component{
         }))
     }
 
+    successUpdateCallback = (projectId) => {
+        this.props.history.push(`/projects/${projectId}`)
+    }
+
+    deleteCallback = () => {
+        this.toggleDelete();
+        this.props.loadProjects();
+    }
+
 
     render(){
 
@@ -128,13 +137,16 @@ class ProjectList extends React.Component{
                     { projectList }
                 </div>
                 <ProjectDeleteDialog modal={this.state.delete}
-                    toggle={this.toggleDelete} projects={this.state.selectedProjects} />
+                    toggle={this.toggleDelete} projects={this.state.selectedProjects} 
+                    deleteCallback={this.deleteCallback} />
                 <ProjectForm
                     push={this.props.history.push}
                     project={this.state.selectedProject}
                     action={this.state.action} 
                     modal={this.state.modal} 
-                    toggle={this.toggle} />
+                    toggle={this.toggle}
+                    editCallback={this.successUpdateCallback}
+                    copyCallback={this.successUpdateCallback} />
                 <PreLoaderBar isLoading={this.props.subLoading} />
             </Container>
         )

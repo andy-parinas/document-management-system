@@ -100,9 +100,7 @@ class ProjectForm extends React.Component{
                 updatedAt: Date.now()
             }
 
-            this.props.updateProject(this.props.project.id, project, () => {
-                this.props.push(`/projects/${this.props.project.id}`)
-            })
+            this.props.updateProject(this.props.project.id, project, this.props.editCallback)
 
         }else if(this.props.action === 'copy'){
 
@@ -117,9 +115,7 @@ class ProjectForm extends React.Component{
                 updatedAt: Date.now()
             }
 
-            this.props.copyProject(this.state.data.id, project, (newProjectId)=>{
-                this.props.push(`/projects/${newProjectId}`)
-            })
+            this.props.copyProject(this.state.data.id, project, this.props.copyCallback)
         }
     }
 

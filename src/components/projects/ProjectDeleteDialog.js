@@ -49,8 +49,7 @@ class ProjectDeleteDialog extends React.Component {
     }
 
     handleSuccessfullDelete = () => {
-        this.props.toggle();
-        this.props.loadProjects();
+       this.props.deleteCallback();
     }
 
 

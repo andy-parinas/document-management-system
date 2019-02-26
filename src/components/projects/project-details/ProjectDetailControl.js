@@ -36,9 +36,9 @@ const ProjectDetailControl = props => {
                         size='sm' color='primary' onClick={props.onAddTask} >Add Task</Button>
                 </div>
                 <div className={classes.buttonGroup} >
-                    <Button className={classes.button} size='sm' color='warning' >Edit</Button>
-                    <Button className={classes.button} size='sm' color='info' >Copy</Button>
-                    <Button className={classes.button} size='sm' color='danger' >Delete</Button>
+                    <Button className={classes.button} size='sm' color='warning' onClick={() => props.onEditCopyProject('edit')} >Edit</Button>
+                    <Button className={classes.button} size='sm' color='info' onClick={() => props.onEditCopyProject('copy')} >Copy</Button>
+                    <Button className={classes.button} size='sm' color='danger' onClick={props.onDeleteProject} >Delete</Button>
                 </div>
 
             </div>

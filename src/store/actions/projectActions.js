@@ -206,7 +206,9 @@ export const updateProject = (id, updates, callback) => (dispatch, getState) => 
             type: END_SUB_LOADING
         })
 
-        if(callback) callback();
+        console.log('Update Project', updates)
+
+        if(callback) callback(id);
 
 
     }).catch(error => {
