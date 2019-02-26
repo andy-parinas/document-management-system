@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {Switch, Route, Redirect, Link} from 'react-router-dom';
 import withAuthorization from '../hoc/withAuthorization';
-
+import {AuthUserContext} from '../../config/context'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
 
 import withStyles from 'react-jss';
@@ -27,6 +27,8 @@ const styles = {
 }
 
 class Dashboard extends React.Component {
+
+    static contextType = AuthUserContext;
 
     state = {
         openSideNav: false
@@ -79,7 +81,7 @@ class Dashboard extends React.Component {
         const {classes} = this.props
         return(
             <Fragment>
-                <Navbar onDrawerAction={this.handleDrawerActions} />
+                <Navbar onDrawerAction={this.handleDrawerActions} email={this.context? this.context.email : ''} />
                 <div className={classes.breadCrumbs}>
                     <Breadcrumb>
                         { this.generateCrumbs(crumbs)}

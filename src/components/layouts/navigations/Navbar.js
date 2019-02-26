@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import withStyles from 'react-jss';
@@ -16,6 +17,7 @@ import {Button,
     DropdownToggle,
     DropdownMenu,
     DropdownItem} from 'reactstrap';
+import { logoutUser } from '../../../store/actions/authActions';
 
 
 const styles = {
@@ -61,14 +63,14 @@ class NavigationBar extends React.Component {
                                 </NavItem>
                                 <UncontrolledDropdown nav inNavbar>
                                     <DropdownToggle nav caret className={classes.navlink} >
-                                        Andy Parinas
+                                        {this.props.email}
                                     </DropdownToggle>
                                     <DropdownMenu right>
                                         <DropdownItem>
                                             Profile
                                         </DropdownItem>
                                         <DropdownItem divider />
-                                        <DropdownItem>
+                                        <DropdownItem onClick={this.props.logout}>
                                             Logout
                                         </DropdownItem>
                                     </DropdownMenu>
@@ -84,4 +86,10 @@ class NavigationBar extends React.Component {
     }
 }
 
-export default withStyles(styles)(NavigationBar);
+const mapDispatchToProps = dispatch => {
+    return{
+        logout: () => dispatch(logoutUser())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(NavigationBar));

@@ -1,9 +1,13 @@
 import React from 'react';
 
 import {auth} from '../../config/Firebase'
-import { AUTH_ERROR, AUTH_SUCCESS } from './actionTypes';
+import { AUTH_ERROR, AUTH_SUCCESS, START_LOADING, END_LOADING } from './actionTypes';
 
 export const loginUser = (email, password, callback) => dispatch => {
+
+    dispatch({
+        type: START_LOADING
+    })
 
     auth.signInWithEmailAndPassword(email, password).then(results => {
 
@@ -13,13 +17,21 @@ export const loginUser = (email, password, callback) => dispatch => {
 
         if(callback) callback();
 
+        dispatch({
+            type: END_LOADING
+        })
+
     }).catch(error => {
-        console.log(error.code);
+        console.log('Signin Error', error.code);
         if(error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' ){
             console.log('Dispatching actions on error')
             dispatch({
                 type: AUTH_ERROR,
                 authError: 'Invalid Username or Password'
+            })
+
+            dispatch({
+                type: END_LOADING
             })
         }
     })
