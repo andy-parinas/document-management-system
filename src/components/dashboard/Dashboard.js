@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import {Switch, Route, Redirect, Link} from 'react-router-dom';
+import withAuthorization from '../hoc/withAuthorization';
 
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
 
@@ -98,4 +99,4 @@ class Dashboard extends React.Component {
     }
 }
 
-export default withStyles(styles)(Dashboard);
+export default withAuthorization(withStyles(styles)(Dashboard));

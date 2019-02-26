@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {Switch, Route} from 'react-router-dom';
 
+import withAuthentication from './hoc/withAuthentication';
+
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Dashboard from './dashboard/Dashboard';
@@ -20,4 +23,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withAuthentication(App);
