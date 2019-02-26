@@ -4,6 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Dashboard from './dashboard/Dashboard';
+import Signin from './auth/Signin';
 
 class App extends Component {
   render() {
@@ -11,7 +12,8 @@ class App extends Component {
     return (
       <div className="App">
           <Switch>
-              <Route to='/' component={Dashboard} />
+              <Route path='/signin' component={Signin} /> 
+              <Route path='/' component={Dashboard} />   
           </Switch>
       </div>
     );
